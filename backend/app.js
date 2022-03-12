@@ -19,7 +19,7 @@ const express = require('express');
 
 const app = express();
 
-app.use('/application', express.static('frontend/dist/angular-frontend'));
+app.use('/application/*', express.static('frontend/dist/angular-frontend'));
 
 app.get('/hello', (req, res) => {
   res.status(200).send('Hello, world!').end();
