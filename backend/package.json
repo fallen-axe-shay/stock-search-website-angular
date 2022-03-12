@@ -14,7 +14,8 @@
   },
   "scripts": {
     "start": "node app.js",
-    "test": "mocha --exit test/*.test.js"
+    "test": "mocha --exit test/*.test.js",
+    "debug": "set DEBUG=express:* & npm start"
   },
   "dependencies": {
     "@angular/cli": "^10.2.4",

@@ -1,0 +1,45 @@
+nav .nav-link {
+    padding: 10px;
+    display: inline-flex;
+    width: 100%;
+    justify-content: end;
+}
+
+.collapse.navbar-collapse {
+    justify-content: end;
+}
+
+nav .nav-link.active {
+    border: white;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+}
+
+nav {
+    background-color: rgb(2, 2, 151);
+    margin-bottom: 0;
+}
+
+nav * {
+    color: white;
+}
+
+.footer {
+    display: inline-flex;
+    justify-content: center;
+    width: 100%;
+    background-color: rgb(211, 211, 211);
+    font-weight: bold;
+    height: 40px;
+    align-items: center;
+    align-self: flex-end;
+}
+
+.footer a {
+    margin-left: 5px;
+}
+
+.page-content {
+    height: 100%;
+}
