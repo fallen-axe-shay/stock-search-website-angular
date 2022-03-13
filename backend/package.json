@@ -13,13 +13,16 @@
     "node": ">=14.0.0"
   },
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "test": "mocha --exit test/*.test.js",
     "debug": "set DEBUG=express:* & npm start"
   },
   "dependencies": {
     "@angular/cli": "^10.2.4",
-    "express": "^4.17.1"
+    "axios": "^0.26.1",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.15"
   },
   "devDependencies": {
     "mocha": "^9.0.0",

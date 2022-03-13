@@ -1,25 +1,31 @@
 .title {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .title h1 {
-    font-size: 30px;
+    font-size: 40px;
     font-weight: bold;
+    letter-spacing: 2px;
 }
 
-.search-box input {
+.search-box > div {
     border-radius: 50px;
     border-style: solid;
     border-width: 3px;
     border-color: rgb(103, 20, 180);
-    width: 100%;
+    width: 450px;
     height: 40px;
+    display: flex;
+    align-items: center;
     padding: 10px;
 }
 
-.search-box .search-icon {
-    
+.search-box input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
 }
 
 .search-box {
@@ -29,6 +35,33 @@
     margin-top: 30px;
 }
 
-.search-box > div {
-    width: 300px;
+.spinner {
+    display: flex;
+    width: 100%;
+}
+.spinner mat-spinner {
+    margin: 5px;
+}
+
+.search-box .search-icon {
+    width: 15px;
+    height: 15px;
+    background-image: url('../../assets/icons/search.svg');
+    background-position: center;
+    background-size: cover;
+    content: "";
+    filter: invert(21%) sepia(77%) saturate(3444%) hue-rotate(264deg) brightness(68%) contrast(113%);
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.search-box .cancel-icon {
+    width: 15px;
+    height: 15px;
+    background-image: url('../../assets/icons/close.svg');
+    background-position: center;
+    background-size: cover;
+    content: "";
+    filter: invert(21%) sepia(77%) saturate(3444%) hue-rotate(264deg) brightness(68%) contrast(113%);
+    cursor: pointer;
 }

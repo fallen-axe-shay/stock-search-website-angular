@@ -4,10 +4,9 @@
     </div>
     <div class="input-group search-box">
         <div>
-            <form [formGroup]="searchForm">
+            <form [formGroup]="searchForm" class="flex-grow-1">
                     <input type="text"
                         placeholder="Enter Stock Ticker Symbol"
-                        aria-label="Number"
                         matInput
                         formControlName="searchFormControl"
                         [matAutocomplete]="auto"
@@ -15,12 +14,18 @@
                         pattern="^[a-zA-Z0-9].*"
                         required>
                     <mat-autocomplete #auto="matAutocomplete">
-                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                        {{option}}
-                    </mat-option>
+                        <mat-option *ngIf="searchForm.get('searchFormControl').value && isLoading">
+                            <mat-spinner diameter="30"></mat-spinner>
+                        </mat-option>
+                        <div *ngIf="searchForm.get('searchFormControl').value && !isLoading">
+                            <mat-option *ngFor="let item of suggestions" [value]="item['symbol']">
+                                {{item['symbol']}} | {{item['description']}}
+                            </mat-option>
+                        </div>
                     </mat-autocomplete>
-                    <fa-icon [icon]="faCoffee"></fa-icon>
             </form>
+            <span class="search-icon" (click)="searchTicker(searchForm.get('searchFormControl').value)"></span>
+            <span class="cancel-icon" (click)="searchForm.get('searchFormControl').setValue(''); resetURL()"></span>
         </div>
     </div>
 </div>

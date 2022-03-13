@@ -1,12 +1,29 @@
 'use strict';
 
-// [START gae_node_request_example]
 const express = require('express');
+const cors = require('cors')
+const axios = require('axios')
+
+const _GLOBAL = {
+  FH_API_KEY: 'c8arq2aad3ifo5nsb640'
+}
 
 const app = express();
 
-app.get('/hello', (req, res) => {
-  res.status(200).send('Hello, world!').end();
+app.use(cors());
+
+app.get('/getAutocompleteData/:ticker', (req, res) => {
+  let data = {
+    token: _GLOBAL.FH_API_KEY,
+    q: req.params.ticker
+  }
+  axios.get('https://finnhub.io/api/v1/search', {params: data})
+  .then(fhRes => {
+    res.status(fhRes.status).json(fhRes.data);
+  })
+  .catch(error => {
+    res.status(500).json({message: error});
+  })
 });
 
 // Start the server

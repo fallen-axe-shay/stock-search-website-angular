@@ -12,7 +12,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
+import { HttpClientModule } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -23,18 +24,20 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome'
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     NgbModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    FontAwesomeModule,
+    MatProgressSpinnerModule,
     RouterModule.forRoot([
-      {path: 'search/home', component: SearchPageComponent},
+      {path: 'search/:ticker', component: SearchPageComponent},
       {path: '', redirectTo: 'search/home', pathMatch: 'full'},
       {path: 'watchlist', component: WatchlistComponent},
-      {path: 'portfolio', component: PortfolioComponent}
+      {path: 'portfolio', component: PortfolioComponent},
+      {path: '**', component: SearchPageComponent} // Wildcard route for a 404 page
     ])
   ],
   providers: [],
