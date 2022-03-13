@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchPageComponent } from './search-page/search-page.component';
-import { RouterModule } from '@angular/router';
+import { RouteReuseStrategy, RouterModule } from '@angular/router';
 import { WatchlistComponent } from './watchlist/watchlist.component';
 import { PortfolioComponent } from './portfolio/portfolio.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -40,7 +40,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
       {path: '**', component: SearchPageComponent} // Wildcard route for a 404 page
     ])
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

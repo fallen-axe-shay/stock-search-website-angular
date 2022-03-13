@@ -12,20 +12,40 @@
                         [matAutocomplete]="auto"
                         name="searchQuery"
                         pattern="^[a-zA-Z0-9].*"
+                        (keydown.enter)="searchTicker(searchForm.get('searchFormControl').value.toUpperCase()); autocomplete.closePanel();"
                         required>
                     <mat-autocomplete #auto="matAutocomplete">
                         <mat-option *ngIf="searchForm.get('searchFormControl').value && isLoading">
                             <mat-spinner diameter="30"></mat-spinner>
                         </mat-option>
                         <div *ngIf="searchForm.get('searchFormControl').value && !isLoading">
-                            <mat-option *ngFor="let item of suggestions" [value]="item['symbol']">
-                                {{item['symbol']}} | {{item['description']}}
+                            <mat-option *ngFor="let item of suggestions" [value]="item['symbol']" (click)="searchTicker(item['symbol'])">
+                                <span class="option-title">{{item['symbol']}}</span> | <span class="option-desc">{{item['description']}}</span>
                             </mat-option>
                         </div>
                     </mat-autocomplete>
             </form>
-            <span class="search-icon" (click)="searchTicker(searchForm.get('searchFormControl').value)"></span>
-            <span class="cancel-icon" (click)="searchForm.get('searchFormControl').setValue(''); resetURL()"></span>
+            <span class="search-icon" (click)="!isSearching && searchTicker(searchForm.get('searchFormControl').value)"></span>
+            <span class="cancel-icon" (click)="!isSearching && searchForm.get('searchFormControl').setValue(''); !isSearching && resetURL()"></span>
+        </div>
+    </div>
+    <mat-spinner *ngIf="isSearching" diameter="70"></mat-spinner>
+    <div *ngIf="resultsReady && !isSearching">
+        <div class="d-flex flex-row justify-content-between company-header">
+            <div class="d-flex flex-column company-buy-sell">
+                <div class="d-flex flex-row">
+                    <span>{{queryResult['ticker']}}</span><span class="star-icon" [class.selected]="isStarred" (click)="isStarred = !isStarred"></span>
+                </div>
+            </div>
+            <img class="company-logo" *ngIf="!logoError" src="{{queryResult['logo']}}" (error)="logoError=true"/>
+            <div class="stock-prices d-flex flex-column">
+                <div class="price">{{queryResult['ticker']}}</div>
+                <div class="change d-flex flex-row">
+                    <span class="arrow"></span>
+                    <span class="change-amount">{{queryResult['d']}} ({{queryResult['dp']}})</span>
+                </div>
+                <div class="time">wqeweq</div>
+            </div>
         </div>
     </div>
 </div>

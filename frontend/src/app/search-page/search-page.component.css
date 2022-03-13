@@ -65,3 +65,32 @@
     filter: invert(21%) sepia(77%) saturate(3444%) hue-rotate(264deg) brightness(68%) contrast(113%);
     cursor: pointer;
 }
+
+mat-option .option-title {
+    font-size: 1em;
+}
+
+mat-option .option-desc {
+    font-size: 0.8em;
+}
+
+.company-header .star-icon {
+    width: 15px;
+    height: 15px;
+    background-image: url('../../assets/icons/star.svg');
+    background-position: center;
+    background-size: cover;
+    content: "";
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.company-header .star-icon.selected {
+    background-image: url('../../assets/icons/star-fill.svg');
+    filter: invert(82%) sepia(54%) saturate(1801%) hue-rotate(356deg) brightness(102%) contrast(103%);
+}
+
+.company-header .company-logo {
+    width: 100px;
+    height: 100px;
+}
