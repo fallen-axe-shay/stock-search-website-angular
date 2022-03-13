@@ -1,8 +1,26 @@
 <div class="container-fluid">
     <div class="title">
-        <h1>Stock Search</h1>
+        <h1>STOCK SEARCH</h1>
     </div>
     <div class="input-group search-box">
-        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" placeholder="Enter stock ticker symbol">
+        <div>
+            <form [formGroup]="searchForm">
+                    <input type="text"
+                        placeholder="Enter Stock Ticker Symbol"
+                        aria-label="Number"
+                        matInput
+                        formControlName="searchFormControl"
+                        [matAutocomplete]="auto"
+                        name="searchQuery"
+                        pattern="^[a-zA-Z0-9].*"
+                        required>
+                    <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                        {{option}}
+                    </mat-option>
+                    </mat-autocomplete>
+                    <fa-icon [icon]="faCoffee"></fa-icon>
+            </form>
+        </div>
     </div>
 </div>
