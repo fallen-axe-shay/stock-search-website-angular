@@ -32,6 +32,7 @@ export class SearchPageComponent implements OnInit {
   resultsReady: Boolean;
   queryResult: any;
   logoError: Boolean;
+  isProfit: Boolean;
 
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
@@ -49,6 +50,7 @@ export class SearchPageComponent implements OnInit {
     this.resultsReady = false;
     this.queryResult = {};
     this.logoError = false;
+    this.isProfit = false;
    }
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
@@ -57,7 +59,7 @@ export class SearchPageComponent implements OnInit {
     let ticker = this.route.snapshot.params.ticker;
     if(ticker.toLowerCase().trim()!='home') {
       this.searchForm.get('searchFormControl').setValue(ticker);
-      this.getStockDetails(ticker.toLowerCase().trim());
+      this.searchTicker(ticker);
     }
     this.searchForm.get('searchFormControl').valueChanges.subscribe((query)=> {
       query = query.toUpperCase();
@@ -89,7 +91,6 @@ export class SearchPageComponent implements OnInit {
   }
 
   getStockDetails(ticker): void {
-    //TODO:
     this.makeRequests(ticker);
   }
 
@@ -107,6 +108,7 @@ export class SearchPageComponent implements OnInit {
     this.resultsReady = false;
     this.queryResult = {};
     this.logoError = false;
+    this.isProfit = false;
     this.changeURL(ticker);
     this.getStockDetails(ticker);
   }
@@ -122,14 +124,22 @@ export class SearchPageComponent implements OnInit {
           this.isSearching = false;
           this.resultsReady = true;
         }
-        let result = res;
-        //TODO:
-        console.log(result)
-        this.queryResult = Object.assign(result, this.queryResult); 
+        console.log(item[0], ticker)
+        this.queryResult = Object.assign(res, this.queryResult); 
         switch(item[0]) {
           case 'Profile':
             break;
           case 'Stock':
+            let datetime = new Date(this.queryResult['t']*1000);
+            var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
+            var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
+            this.queryResult['t'] = date + ' ' + time;
+            let change = this.queryResult['d'];
+            if(change>0) {
+              this.isProfit = true;
+            }
+            this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
+            this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
             break;
         }
       }, (error)=>this.showError());
@@ -137,7 +147,11 @@ export class SearchPageComponent implements OnInit {
   }
 
   showError(): void {
+    this.isSearching = false;
+  }
 
+  zeroPad(num, places) {
+    return String(num).padStart(places, '0');
   }
   
 }

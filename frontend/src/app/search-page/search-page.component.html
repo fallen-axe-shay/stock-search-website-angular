@@ -29,22 +29,36 @@
             <span class="cancel-icon" (click)="!isSearching && searchForm.get('searchFormControl').setValue(''); !isSearching && resetURL()"></span>
         </div>
     </div>
-    <mat-spinner *ngIf="isSearching" diameter="70"></mat-spinner>
+    <div *ngIf="isSearching" class="d-flex justify-content-center mt-5">
+        <mat-spinner  diameter="70"></mat-spinner>
+    </div>
     <div *ngIf="resultsReady && !isSearching">
-        <div class="d-flex flex-row justify-content-between company-header">
-            <div class="d-flex flex-column company-buy-sell">
-                <div class="d-flex flex-row">
-                    <span>{{queryResult['ticker']}}</span><span class="star-icon" [class.selected]="isStarred" (click)="isStarred = !isStarred"></span>
+        <div class="d-flex flex-row company-header">
+            <div class="d-flex flex-column company-buy-sell col-4">
+                <div class="d-flex flex-row p-1">
+                    <span class="ticker">{{queryResult['ticker']}}</span><span class="star-icon" [class.selected]="isStarred" (click)="isStarred = !isStarred"></span>
+                </div>
+                <div class="desc p-1">
+                    {{queryResult['name']}}
+                </div>
+                <div class="market p-1">
+                    {{queryResult['exchange']}}
+                </div>
+                <div class="d-flex flex-row action-buttons p-1">
+                    <button type="button" class="btn btn-success mr-2">Buy</button>
+                    <button type="button" class="btn btn-danger ml-2">Sell</button>
                 </div>
             </div>
-            <img class="company-logo" *ngIf="!logoError" src="{{queryResult['logo']}}" (error)="logoError=true"/>
-            <div class="stock-prices d-flex flex-column">
-                <div class="price">{{queryResult['ticker']}}</div>
-                <div class="change d-flex flex-row">
-                    <span class="arrow"></span>
+            <div class="d-flex col-4 justify-content-center">
+                <img class="company-logo" *ngIf="!logoError" src="{{queryResult['logo']}}" (error)="logoError=true"/>
+            </div>
+            <div class="stock-prices d-flex flex-column col-4">
+                <div class="price d-flex justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit"  [class.red]="!isProfit">{{queryResult['c']}}</div>
+                <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit" [class.red]="!isProfit">
+                    <span class="arrow mr-2" [class.green]="isProfit" [class.red]="!isProfit"></span>
                     <span class="change-amount">{{queryResult['d']}} ({{queryResult['dp']}})</span>
                 </div>
-                <div class="time">wqeweq</div>
+                <div class="time d-flex justify-content-end p-1">{{queryResult['t']}}</div>
             </div>
         </div>
     </div>

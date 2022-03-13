@@ -74,9 +74,13 @@ mat-option .option-desc {
     font-size: 0.8em;
 }
 
+.company-header {
+    margin-top: 50px;
+}
+
 .company-header .star-icon {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     background-image: url('../../assets/icons/star.svg');
     background-position: center;
     background-size: cover;
@@ -91,6 +95,58 @@ mat-option .option-desc {
 }
 
 .company-header .company-logo {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
+}
+
+.company-header .ticker {
+    font-size: 30px;
+    color: #413f41;
+}
+
+.company-header .desc {
+    font-size: 20px;
+    color: #696c71;
+}
+
+.company-header .market {
+    font-weight: lighter;
+}
+
+.company-header .stock-prices .price {
+    font-size: 30px;
+}
+
+.company-header .stock-prices .change {
+    font-size: 20px;
+}
+
+.company-header .stock-prices .time {
+    font-weight: lighter;
+}
+
+.company-header .green {
+    color: green;
+}
+
+.company-header .red {
+    color: red;
+}
+
+.company-header .stock-prices .arrow {
+    width: 20px;
+    height: 20px;
+    background-position: center;
+    background-size: cover;
+    content: "";
+}
+
+.company-header .stock-prices .arrow.green {
+    background-image: url('../../assets/icons/caret-up-fill.svg');
+    filter: invert(22%) sepia(47%) saturate(6918%) hue-rotate(120deg) brightness(91%) contrast(102%);
+}
+
+.company-header .stock-prices .arrow.red {
+    background-image: url('../../assets/icons/caret-down-fill.svg');
+    filter: invert(9%) sepia(80%) saturate(6387%) hue-rotate(349deg) brightness(141%) contrast(119%);
 }
