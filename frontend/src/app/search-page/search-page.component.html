@@ -37,7 +37,7 @@
             <div class="d-flex flex-row company-header">
                 <div class="d-flex flex-column company-buy-sell col-4">
                     <div class="d-flex flex-row p-1">
-                        <span class="ticker">{{state.getStockData()['ticker']}}</span><span class="star-icon" [class.selected]="(state.getSearchPageFlags()).isStarred" (click)="state.addSearchpageFlags({isStarred:!(state.getSearchPageFlags()).isStarred})"></span>
+                        <span class="ticker">{{state.getStockData()['ticker']}}</span><span class="star-icon" [class.selected]="(state.getSearchPageFlags()).isStarred" (click)="state.addSearchPageFlags({isStarred:!(state.getSearchPageFlags()).isStarred})"></span>
                     </div>
                     <div class="desc p-1">
                         {{state.getStockData()['name']}}
