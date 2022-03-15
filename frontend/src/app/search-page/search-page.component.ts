@@ -17,8 +17,6 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 })
 export class SearchPageComponent implements OnInit {
 
-  isLoading: Boolean;
-
   searchForm = new FormGroup({
     searchFormControl: new FormControl('')
   });
@@ -27,12 +25,8 @@ export class SearchPageComponent implements OnInit {
 
   noRequests: any;
   currentRequest: any;
-  isStarred: Boolean;
-  isSearching: Boolean;
-  resultsReady: Boolean;
   queryResult: any;
-  logoError: Boolean;
-  isProfit: Boolean;
+  currentTime: any;
 
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
@@ -41,35 +35,36 @@ export class SearchPageComponent implements OnInit {
   }
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, private state: StateService) {
-    this.isLoading = false;
     this.suggestions = [];
     this.noRequests = 0;
     this.currentRequest = 0;
-    this.isStarred = false;
-    this.isSearching = false;
-    this.resultsReady = false;
     this.queryResult = {};
-    this.logoError = false;
-    this.isProfit = false;
+    this.setCurrentTime();
    }
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
 
   ngOnInit(): void {
     let ticker = this.route.snapshot.params.ticker;
-    if(ticker.toLowerCase().trim()!='home') {
-      this.searchForm.get('searchFormControl').setValue(ticker);
-      this.searchTicker(ticker);
+    if((this.state.getSearchPageFlags()).currentSearch!='') {
+      this.searchForm.get('searchFormControl').setValue((this.state.getSearchPageFlags()).currentSearch);
+      this.changeURL((this.state.getSearchPageFlags()).currentSearch);
+    } else {
+      if(ticker.toLowerCase().trim()!='home') {
+        this.searchForm.get('searchFormControl').setValue(ticker);
+        this.searchTicker(ticker);
+      }
     }
     this.searchForm.get('searchFormControl').valueChanges.subscribe((query)=> {
       query = query.toUpperCase();
       this.noRequests += 1;
-      this.isLoading = true;
+      this.state.addSearchPageFlags({isLoading: true});
+      console.log(this.state.getSearchPageFlags())
       this.suggestions =[];
       this.getAutoCompleteDetails(query).then((val) => {
         this.currentRequest += 1;
         if(this.noRequests == this.currentRequest) {
-          this.isLoading = false;
+          this.state.addSearchPageFlags({isLoading: false});
           this.suggestions = val;
         }
       }).catch(()=>{
@@ -77,6 +72,16 @@ export class SearchPageComponent implements OnInit {
         this.currentRequest += 1;
       });
     });
+    setInterval(() => {
+      this.setCurrentTime();
+    }, 60*1000);
+  }
+
+  setCurrentTime() {
+    let today = new Date();
+    var date = today.getFullYear()+'-'+this.zeroPad(today.getMonth()+1, 2)+'-'+this.zeroPad(today.getDate(),2);
+    var time = this.zeroPad(today.getHours(),2) + ":" + this.zeroPad(today.getMinutes(),2) + ":" + this.zeroPad(today.getSeconds(),2);
+    this.currentTime = date + ' ' + time;
   }
 
   getAutoCompleteDetails(ticker) {
@@ -96,19 +101,25 @@ export class SearchPageComponent implements OnInit {
 
   resetURL(): void {
     this.location.replaceState("/search/home");
-    this.resultsReady = false;
-    this.isSearching = false;  }
+    this.state.addSearchPageFlags({resultsReady: false, isSearching: false});
+  }
 
   changeURL(ticker): void {
     this.location.replaceState(`/search/${ticker}`);
   }
 
   searchTicker(ticker) {
-    this.isSearching = true;
-    this.resultsReady = false;
     this.queryResult = {};
-    this.logoError = false;
-    this.isProfit = false;
+    this.state.addSearchPageFlags(
+        {
+          resultsReady: false, 
+          isSearching: true,
+          logoError: false,
+          isProfit: false,
+          currentSearch: ticker
+        }
+      );
+    this.state.setStockData({});
     this.changeURL(ticker);
     this.getStockDetails(ticker);
   }
@@ -120,34 +131,28 @@ export class SearchPageComponent implements OnInit {
       let url = `${item[1]}/${ticker}`;
       this.httpClient.get(url).subscribe((res)=>{
         resCount++;
+        this.queryResult = Object.assign({...res}, {...this.queryResult});
         if(resCount==requests.length) {
-          this.isSearching = false;
-          this.resultsReady = true;
-        }
-        console.log(item[0], ticker)
-        this.queryResult = Object.assign(res, this.queryResult); 
-        switch(item[0]) {
-          case 'Profile':
-            break;
-          case 'Stock':
-            let datetime = new Date(this.queryResult['t']*1000);
-            var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
-            var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
-            this.queryResult['t'] = date + ' ' + time;
-            let change = this.queryResult['d'];
-            if(change>0) {
-              this.isProfit = true;
-            }
-            this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
-            this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
-            break;
+          let datetime = new Date(this.queryResult['t']*1000);
+          this.state.addSearchPageFlags({isMarketOpen: (((datetime.getTime() - (new Date()).getTime())/1000)<(5*60))});
+          var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
+          var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
+          this.queryResult['t'] = date + ' ' + time;
+          let change = this.queryResult['d'];
+          if(change>0) {
+            this.state.addSearchPageFlags({isProfit: true});
+          }
+          this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
+          this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
+          this.state.addStockData(this.queryResult);
+          this.state.addSearchPageFlags({resultsReady: true, isSearching: false});
         }
       }, (error)=>this.showError());
     });
   }
 
   showError(): void {
-    this.isSearching = false;
+    this.state.addSearchPageFlags({isSearching: false});
   }
 
   zeroPad(num, places) {

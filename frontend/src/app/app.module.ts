@@ -14,13 +14,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatTabsModule} from '@angular/material/tabs';
+import { SearchSummaryComponent } from './search-summary/search-summary.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SearchPageComponent,
     WatchlistComponent,
-    PortfolioComponent
+    PortfolioComponent,
+    SearchSummaryComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +35,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ReactiveFormsModule,
     MatInputModule,
     MatProgressSpinnerModule,
+    MatTabsModule,
     RouterModule.forRoot([
       {path: 'search/:ticker', component: SearchPageComponent},
       {path: '', redirectTo: 'search/home', pathMatch: 'full'},

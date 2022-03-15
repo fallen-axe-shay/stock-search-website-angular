@@ -15,50 +15,68 @@
                         (keydown.enter)="searchTicker(searchForm.get('searchFormControl').value.toUpperCase()); autocomplete.closePanel();"
                         required>
                     <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option *ngIf="searchForm.get('searchFormControl').value && isLoading">
+                        <mat-option *ngIf="searchForm.get('searchFormControl').value && (state.getSearchPageFlags()).isLoading">
                             <mat-spinner diameter="30"></mat-spinner>
                         </mat-option>
-                        <div *ngIf="searchForm.get('searchFormControl').value && !isLoading">
+                        <div *ngIf="searchForm.get('searchFormControl').value && !(state.getSearchPageFlags()).isLoading">
                             <mat-option *ngFor="let item of suggestions" [value]="item['symbol']" (click)="searchTicker(item['symbol'])">
                                 <span class="option-title">{{item['symbol']}}</span> | <span class="option-desc">{{item['description']}}</span>
                             </mat-option>
                         </div>
                     </mat-autocomplete>
             </form>
-            <span class="search-icon" (click)="!isSearching && searchTicker(searchForm.get('searchFormControl').value)"></span>
-            <span class="cancel-icon" (click)="!isSearching && searchForm.get('searchFormControl').setValue(''); !isSearching && resetURL()"></span>
+            <span class="search-icon" (click)="!(state.getSearchPageFlags()).isSearching && searchTicker(searchForm.get('searchFormControl').value)"></span>
+            <span class="cancel-icon" (click)="!(state.getSearchPageFlags()).isSearching && searchForm.get('searchFormControl').setValue(''); !(state.getSearchPageFlags()).isSearching && resetURL()"></span>
         </div>
     </div>
-    <div *ngIf="isSearching" class="d-flex justify-content-center mt-5">
+    <div *ngIf="(state.getSearchPageFlags()).isSearching" class="d-flex justify-content-center mt-5">
         <mat-spinner  diameter="70"></mat-spinner>
     </div>
-    <div *ngIf="resultsReady && !isSearching">
-        <div class="d-flex flex-row company-header">
-            <div class="d-flex flex-column company-buy-sell col-4">
-                <div class="d-flex flex-row p-1">
-                    <span class="ticker">{{queryResult['ticker']}}</span><span class="star-icon" [class.selected]="isStarred" (click)="isStarred = !isStarred"></span>
+    <div *ngIf="(state.getSearchPageFlags()).resultsReady && !(state.getSearchPageFlags()).isSearching">
+        <div class="d-flex flex-column col-10 m-auto">
+            <div class="d-flex flex-row company-header">
+                <div class="d-flex flex-column company-buy-sell col-4">
+                    <div class="d-flex flex-row p-1">
+                        <span class="ticker">{{state.getStockData()['ticker']}}</span><span class="star-icon" [class.selected]="(state.getSearchPageFlags()).isStarred" (click)="state.addSearchpageFlags({isStarred:!(state.getSearchPageFlags()).isStarred})"></span>
+                    </div>
+                    <div class="desc p-1">
+                        {{state.getStockData()['name']}}
+                    </div>
+                    <div class="market p-1">
+                        {{state.getStockData()['exchange']}}
+                    </div>
+                    <div class="d-flex flex-row action-buttons p-1">
+                        <button type="button" class="btn btn-success mr-2">Buy</button>
+                        <button type="button" class="btn btn-danger ml-2">Sell</button>
+                    </div>
                 </div>
-                <div class="desc p-1">
-                    {{queryResult['name']}}
+                <div class="d-flex col-4 justify-content-center">
+                    <img class="company-logo" *ngIf="!(state.getSearchPageFlags()).logoError" src="{{state.getStockData()['logo']}}" (error)="state.addSearchPageFlag({logoError: true})"/>
                 </div>
-                <div class="market p-1">
-                    {{queryResult['exchange']}}
-                </div>
-                <div class="d-flex flex-row action-buttons p-1">
-                    <button type="button" class="btn btn-success mr-2">Buy</button>
-                    <button type="button" class="btn btn-danger ml-2">Sell</button>
+                <div class="stock-prices d-flex flex-column col-4">
+                    <div class="price d-flex justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit"  [class.red]="!isProfit">{{state.getStockData()['c']}}</div>
+                    <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit" [class.red]="!isProfit">
+                        <span class="arrow mr-2" [class.green]="(state.getSearchPageFlags()).isProfit" [class.red]="!(state.getSearchPageFlags()).isProfit"></span>
+                        <span class="change-amount">{{state.getStockData()['d']}} ({{state.getStockData()['dp']}})</span>
+                    </div>
+                    <div class="time d-flex justify-content-end p-1">{{currentTime}}</div>
                 </div>
             </div>
-            <div class="d-flex col-4 justify-content-center">
-                <img class="company-logo" *ngIf="!logoError" src="{{queryResult['logo']}}" (error)="logoError=true"/>
-            </div>
-            <div class="stock-prices d-flex flex-column col-4">
-                <div class="price d-flex justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit"  [class.red]="!isProfit">{{queryResult['c']}}</div>
-                <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit" [class.red]="!isProfit">
-                    <span class="arrow mr-2" [class.green]="isProfit" [class.red]="!isProfit"></span>
-                    <span class="change-amount">{{queryResult['d']}} ({{queryResult['dp']}})</span>
+            <div class="market d-flex justify-content-center">
+                <div *ngIf="(state.getSearchPageFlags()).isMarketOpen" class="open">
+                    Market is Open
                 </div>
-                <div class="time d-flex justify-content-end p-1">{{queryResult['t']}}</div>
+                <div *ngIf="!(state.getSearchPageFlags()).isMarketOpen" class="closed">
+                    Market closed on {{state.getStockData()['t']}}
+                </div>
+            </div>
+            <div class="align-self-center col-12">
+                <mat-tab-group dynamicHeight mat-stretch-tabs>
+                    <mat-tab label="Summary"> Summary </mat-tab>
+                    <mat-tab label="Top News"> Top News </mat-tab>
+                    <mat-tab label="Charts"> Charts </mat-tab>
+                    <mat-tab label="Insights"> Insights </mat-tab>
+                </mat-tab-group>
             </div>
         </div>
     </div>

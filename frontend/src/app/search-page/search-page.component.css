@@ -95,8 +95,8 @@ mat-option .option-desc {
 }
 
 .company-header .company-logo {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
 }
 
 .company-header .ticker {
@@ -149,4 +149,22 @@ mat-option .option-desc {
 .company-header .stock-prices .arrow.red {
     background-image: url('../../assets/icons/caret-down-fill.svg');
     filter: invert(9%) sepia(80%) saturate(6387%) hue-rotate(349deg) brightness(141%) contrast(119%);
+}
+
+.market .open {
+    color: #28a745;
+}
+
+.market .closed {
+    color: red;
+}
+
+.market {
+    margin-top: 20px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+mat-tab-group {
+    margin-top: 50px;
 }
