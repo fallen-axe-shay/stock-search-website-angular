@@ -20,5 +20,12 @@
                 </div>
             </div>
         </div>
+        <div class="summary-chart">
+            <highcharts-chart 
+                [Highcharts]="Highcharts"
+                [options]="chartOptions"
+                [(update)]="updateFlag"
+                ></highcharts-chart>
+        </div>
     </div>
 </div>

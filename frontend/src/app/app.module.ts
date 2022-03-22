@@ -19,6 +19,7 @@ import { SearchSummaryComponent } from './search-summary/search-summary.componen
 import { SearchTopNewsComponent } from './search-top-news/search-top-news.component';
 import { SearchChartsComponent } from './search-charts/search-charts.component';
 import { SearchInsightsComponent } from './search-insights/search-insights.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { SearchInsightsComponent } from './search-insights/search-insights.compo
     MatInputModule,
     MatProgressSpinnerModule,
     MatTabsModule,
+    HighchartsChartModule,
     RouterModule.forRoot([
       {path: 'search/:ticker', component: SearchPageComponent},
       {path: '', redirectTo: 'search/home', pathMatch: 'full'},

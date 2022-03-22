@@ -1,29 +1,31 @@
-<nav class="navbar navbar-expand-lg navbar-dark mb-3">
-    <div class="container-fluid">
+<div class="d-flex flex-column app-container flex-grow-1">
+    <nav class="navbar navbar-expand-lg navbar-dark mb-3">
+        <div class="container-fluid">
 
-        <a class="navbar-brand" routerLink="/" routerLinkActive="active">Stock Search</a>
-    
-        <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
-        &#9776;
-        </button>
-    
-        <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-            <a class="nav-link" (click)="selectedNavItem='search'" routerLink="/search/home" outerLinkActive="active" (click)="isMenuCollapsed = true">Search</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" (click)="selectedNavItem='watchlist'" [class.active]="selectedNavItem=='watchlist'" routerLink="/watchlist" outerLinkActive="active" (click)="isMenuCollapsed = true">WatchList</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" (click)="selectedNavItem='portfolio'" [class.active]="selectedNavItem=='portfolio'" routerLink="/portfolio" outerLinkActive="active" (click)="isMenuCollapsed = true">Portfolio</a>
-            </li>
-        </ul>
+            <a class="navbar-brand" routerLink="/" routerLinkActive="active">Stock Search</a>
+        
+            <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+            &#9776;
+            </button>
+        
+            <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                <a class="nav-link" (click)="selectedNavItem='search'" routerLink="/search/home" outerLinkActive="active" (click)="isMenuCollapsed = true">Search</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" (click)="selectedNavItem='watchlist'" [class.active]="selectedNavItem=='watchlist'" routerLink="/watchlist" outerLinkActive="active" (click)="isMenuCollapsed = true">WatchList</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" (click)="selectedNavItem='portfolio'" [class.active]="selectedNavItem=='portfolio'" routerLink="/portfolio" outerLinkActive="active" (click)="isMenuCollapsed = true">Portfolio</a>
+                </li>
+            </ul>
+            </div>
+
         </div>
-
+    </nav>
+    <div class="page-content">
+        <router-outlet></router-outlet>
     </div>
-</nav>
-<div class="page-content">
-    <router-outlet></router-outlet>
+    <div class="footer">Powered by<a href="https://finnhub.io/" target="_blank">Finnhub.io</a></div>
 </div>
-<div class="footer">Powered by<a href="https://finnhub.io/" target="_blank">Finnhub.io</a></div>

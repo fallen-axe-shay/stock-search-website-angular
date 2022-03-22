@@ -9,6 +9,7 @@ import { tick } from '@angular/core/testing';
 import { ThrowStmt } from '@angular/compiler';
 import { StateService } from 'src/services/state-service.service';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { SearchSummaryComponent } from '../search-summary/search-summary.component';
 
 @Component({
   selector: 'app-search-page',
@@ -28,6 +29,8 @@ export class SearchPageComponent implements OnInit {
   queryResult: any;
   currentTime: any;
 
+  intervalObject: any;
+
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
     companyProfile: ['Profile', '/api/getCompanyProfile'],
@@ -42,9 +45,13 @@ export class SearchPageComponent implements OnInit {
     this.currentRequest = 0;
     this.queryResult = {};
     this.setCurrentTime();
+    this.state.getSearchPageFlags()['resultsReady'] && this.clearSearchInterval();
+    this.intervalObject = null;
+    this.state.getSearchPageFlags()['resultsReady'] && this.setSearchInterval(this.state.getStockData()['ticker']);
    }
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
+   @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
 
   ngOnInit(): void {
     let ticker = this.route.snapshot.params.ticker;
@@ -103,6 +110,7 @@ export class SearchPageComponent implements OnInit {
   resetURL(): void {
     this.location.replaceState("/search/home");
     this.state.addSearchPageFlags({resultsReady: false, isSearching: false});
+    this.intervalObject && clearInterval(this.intervalObject);
   }
 
   changeURL(ticker): void {
@@ -111,6 +119,8 @@ export class SearchPageComponent implements OnInit {
 
   searchTicker($event: any) {
     let ticker = Array.isArray($event) ? $event[0].toUpperCase() : $event.toUpperCase();
+    this.clearSearchInterval();
+    this.intervalObject = null;
     this.queryResult = {};
     this.state.addSearchPageFlags(
         {
@@ -126,45 +136,66 @@ export class SearchPageComponent implements OnInit {
     this.getStockDetails(ticker);
   }
 
-  makeRequests(ticker): void {
-    let resCount = 0;
-    let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers];
-    requests.forEach((item)=> {
-      let url;
-      switch(item[0]) {
-        default:
-          url = `${item[1]}/${ticker}`
-      }
-      this.httpClient.get(url).subscribe((res)=>{
-        resCount++;
+  clearSearchInterval() {
+    this.intervalObject && clearInterval(this.intervalObject);
+  }
+
+  makeRequests(ticker, refresh = false) {
+    return new Promise((resolve, reject) => {
+      let resCount = 0;
+      let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers];
+      requests.forEach((item)=> {
+        let url;
         switch(item[0]) {
-          case 'Peers':
-            res = {
-              peers: res
-            }
-            break;
           default:
-            //Do nothing
+            url = `${item[1]}/${ticker}`
         }
-        this.queryResult = Object.assign({...res}, {...this.queryResult});
-        if(resCount==requests.length) {
-          let datetime = new Date(this.queryResult['t']*1000);
-          this.queryResult['t_unix'] = this.queryResult['t'];
-          this.state.addSearchPageFlags({isMarketOpen: ((((new Date()).getTime())/1000 - datetime.getTime()/1000)<(5*60))});
-          var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
-          var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
-          this.queryResult['t'] = date + ' ' + time;
-          let change = this.queryResult['d'];
-          if(change>0) {
-            this.state.addSearchPageFlags({isProfit: true});
+        this.httpClient.get(url).subscribe((res)=>{
+          resCount++;
+          switch(item[0]) {
+            case 'Peers':
+              res = {
+                peers: res
+              }
+              break;
+            default:
+              //Do nothing
           }
-          this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
-          this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
-          this.state.addStockData(this.queryResult);
-          this.state.addSearchPageFlags({resultsReady: true, isSearching: false});
-        }
-      }, (error)=>this.showError());
+          this.queryResult = Object.assign({...res}, {...this.queryResult});
+          if(resCount==requests.length) {
+            let datetime = new Date(this.queryResult['t']*1000);
+            this.queryResult['t_unix'] = this.queryResult['t'];
+            this.state.addSearchPageFlags({isMarketOpen: ((((new Date()).getTime())/1000 - datetime.getTime()/1000)<(5*60))});
+            var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
+            var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
+            this.queryResult['t'] = date + ' ' + time;
+            let change = this.queryResult['d'];
+            if(change>0) {
+              this.state.addSearchPageFlags({isProfit: true});
+            }
+            this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
+            this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
+            this.state.addStockData(this.queryResult);
+            !refresh && this.state.addSearchPageFlags({resultsReady: true, isSearching: false});
+            !refresh && this.setSearchInterval(ticker);
+            resolve(true);
+          }
+        }, (error)=>{ this.showError(); reject(false) });
+      });
     });
+  }
+
+  setSearchInterval(ticker) {
+    this.intervalObject = setInterval(()=>this.updateStockData(ticker), 15*1000);
+  }
+
+  updateStockData(ticker) {
+    this.queryResult = {};
+    this.setCurrentTime();
+    this.makeRequests(ticker, true).then((result)=> {
+      this.searchSummary.showSummaryData(ticker);
+    });
+
   }
 
   showError(): void {

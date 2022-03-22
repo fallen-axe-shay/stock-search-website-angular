@@ -76,7 +76,6 @@ app.get('/getCompanyHistoricalData/:ticker/:time', (req, res) => {
     from: parseInt(req.params.time) - (6*60*60),
     to: req.params.time
   }
-  console.log(data)
   axios.get('https://finnhub.io/api/v1/stock/candle', {params: data})
   .then(fhRes => {
     res.status(fhRes.status).json(fhRes.data);

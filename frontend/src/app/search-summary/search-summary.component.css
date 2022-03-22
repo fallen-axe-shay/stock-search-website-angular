@@ -28,3 +28,14 @@
     text-decoration: underline;
     color: #1468c2;
 }
+
+.summary-chart {
+
+}
+
+highcharts-chart {
+    display: block;
+    padding: 20px;
+    width: 600px;
+    height: 400px;
+}
