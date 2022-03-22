@@ -1,0 +1,30 @@
+.bold {
+    font-weight: bold;
+}
+
+.underline {
+    text-decoration: underline;
+}
+
+.stock-price-summary {
+    padding: 30px;
+    margin-left: 20px;
+}
+
+.stock-price-summary div > span:first-child {
+    min-width: 80px;
+}
+
+.company-details-summary {
+    padding: 20px;
+}
+
+.link {
+    color: #1482f8;
+    cursor: pointer;
+}
+
+.link:hover {
+    text-decoration: underline;
+    color: #1468c2;
+}

@@ -16,6 +16,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import {MatTabsModule} from '@angular/material/tabs';
 import { SearchSummaryComponent } from './search-summary/search-summary.component';
+import { SearchTopNewsComponent } from './search-top-news/search-top-news.component';
+import { SearchChartsComponent } from './search-charts/search-charts.component';
+import { SearchInsightsComponent } from './search-insights/search-insights.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,10 @@ import { SearchSummaryComponent } from './search-summary/search-summary.componen
     SearchPageComponent,
     WatchlistComponent,
     PortfolioComponent,
-    SearchSummaryComponent
+    SearchSummaryComponent,
+    SearchTopNewsComponent,
+    SearchChartsComponent,
+    SearchInsightsComponent
   ],
   imports: [
     BrowserModule,

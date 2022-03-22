@@ -53,9 +53,9 @@
                 <div class="d-flex col-4 justify-content-center">
                     <img class="company-logo" *ngIf="!(state.getSearchPageFlags()).logoError" src="{{state.getStockData()['logo']}}" (error)="state.addSearchPageFlag({logoError: true})"/>
                 </div>
-                <div class="stock-prices d-flex flex-column col-4">
-                    <div class="price d-flex justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit"  [class.red]="!isProfit">{{state.getStockData()['c']}}</div>
-                    <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2" [class.green]="isProfit" [class.red]="!isProfit">
+                <div class="stock-prices d-flex flex-column col-4" [class.green]="(state.getSearchPageFlags()).isProfit"  [class.red]="!(state.getSearchPageFlags()).isProfit">
+                    <div class="price d-flex justify-content-end p-1 pb-2 pt-2">{{state.getStockData()['c']}}</div>
+                    <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2">
                         <span class="arrow mr-2" [class.green]="(state.getSearchPageFlags()).isProfit" [class.red]="!(state.getSearchPageFlags()).isProfit"></span>
                         <span class="change-amount">{{state.getStockData()['d']}} ({{state.getStockData()['dp']}})</span>
                     </div>
@@ -72,10 +72,10 @@
             </div>
             <div class="align-self-center col-12">
                 <mat-tab-group dynamicHeight mat-stretch-tabs>
-                    <mat-tab label="Summary"> Summary </mat-tab>
-                    <mat-tab label="Top News"> Top News </mat-tab>
-                    <mat-tab label="Charts"> Charts </mat-tab>
-                    <mat-tab label="Insights"> Insights </mat-tab>
+                    <mat-tab label="Summary"> <app-search-summary (searchTicker)="searchTicker($event)"></app-search-summary> </mat-tab>
+                    <mat-tab label="Top News"> <app-search-top-news></app-search-top-news> </mat-tab>
+                    <mat-tab label="Charts"> <app-search-charts></app-search-charts> </mat-tab>
+                    <mat-tab label="Insights"> <app-search-insights></app-search-insights> </mat-tab>
                 </mat-tab-group>
             </div>
         </div>

@@ -95,7 +95,6 @@ mat-option .option-desc {
 }
 
 .company-header .company-logo {
-    width: 120px;
     height: 120px;
 }
 
@@ -123,6 +122,7 @@ mat-option .option-desc {
 
 .company-header .stock-prices .time {
     font-weight: lighter;
+    color: #413f41;
 }
 
 .company-header .green {
@@ -160,7 +160,6 @@ mat-option .option-desc {
 }
 
 .market {
-    margin-top: 20px;
     font-size: 15px;
     font-weight: bold;
 }

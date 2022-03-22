@@ -31,10 +31,12 @@ export class SearchPageComponent implements OnInit {
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
     companyProfile: ['Profile', '/api/getCompanyProfile'],
-    companyQuote: ['Stock', '/api/getCompanyQuote']
+    companyQuote: ['Stock', '/api/getCompanyQuote'],
+    companyPeers: ['Peers', '/api/getCompanyPeers'],
+    companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData']
   }
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, private state: StateService) {
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService) {
     this.suggestions = [];
     this.noRequests = 0;
     this.currentRequest = 0;
@@ -59,7 +61,6 @@ export class SearchPageComponent implements OnInit {
       query = query.toUpperCase();
       this.noRequests += 1;
       this.state.addSearchPageFlags({isLoading: true});
-      console.log(this.state.getSearchPageFlags())
       this.suggestions =[];
       this.getAutoCompleteDetails(query).then((val) => {
         this.currentRequest += 1;
@@ -108,7 +109,8 @@ export class SearchPageComponent implements OnInit {
     this.location.replaceState(`/search/${ticker}`);
   }
 
-  searchTicker(ticker) {
+  searchTicker($event: any) {
+    let ticker = Array.isArray($event) ? $event[0].toUpperCase() : $event.toUpperCase();
     this.queryResult = {};
     this.state.addSearchPageFlags(
         {
@@ -120,21 +122,35 @@ export class SearchPageComponent implements OnInit {
         }
       );
     this.state.setStockData({});
-    this.changeURL(ticker);
+    !Array.isArray($event) && this.changeURL(ticker);
     this.getStockDetails(ticker);
   }
 
   makeRequests(ticker): void {
     let resCount = 0;
-    let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote];
+    let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers];
     requests.forEach((item)=> {
-      let url = `${item[1]}/${ticker}`;
+      let url;
+      switch(item[0]) {
+        default:
+          url = `${item[1]}/${ticker}`
+      }
       this.httpClient.get(url).subscribe((res)=>{
         resCount++;
+        switch(item[0]) {
+          case 'Peers':
+            res = {
+              peers: res
+            }
+            break;
+          default:
+            //Do nothing
+        }
         this.queryResult = Object.assign({...res}, {...this.queryResult});
         if(resCount==requests.length) {
           let datetime = new Date(this.queryResult['t']*1000);
-          this.state.addSearchPageFlags({isMarketOpen: (((datetime.getTime() - (new Date()).getTime())/1000)<(5*60))});
+          this.queryResult['t_unix'] = this.queryResult['t'];
+          this.state.addSearchPageFlags({isMarketOpen: ((((new Date()).getTime())/1000 - datetime.getTime()/1000)<(5*60))});
           var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
           var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
           this.queryResult['t'] = date + ' ' + time;
