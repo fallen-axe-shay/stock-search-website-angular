@@ -1,0 +1,56 @@
+.modal-title {
+    font-weight: bold;
+    color: black;
+    font-size: 25px;
+}
+
+.date {
+    color: rgb(172, 172, 172);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.headline {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-weight: 13px;
+}
+
+.link {
+    color: rgb(172, 172, 172);
+    font-style: italic;
+    margin-top: 10px;
+}
+
+.modal-close-btn {
+    background-color: transparent;
+    background-image: url('../../assets/icons/close.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 20px;
+    width: 20px;
+    border: none;
+}
+
+.share-buttons img {
+    object-fit: cover;
+    object-position: center;
+    height: 60px;
+    width: 60px;
+    filter: invert(42%) sepia(90%) saturate(1173%) hue-rotate(180deg) brightness(100%) contrast(88%);
+    padding: 10px;
+}
+
+.twitter-share-button img {
+    filter: invert(42%) sepia(90%) saturate(1173%) hue-rotate(180deg) brightness(100%) contrast(88%);
+}
+
+.facebook-share-button img {
+    filter: invert(33%) sepia(95%) saturate(400%) hue-rotate(180deg) brightness(89%) contrast(98%);
+}
+
+.share span {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

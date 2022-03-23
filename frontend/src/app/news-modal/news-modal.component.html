@@ -1,0 +1,27 @@
+<ng-template #content let-modal> 
+    <div class="modal-header">
+        <div class="d-flex flex-column">
+            <h4 class="modal-title" id="modal-basic-title">{{data.source}}</h4>
+            <div class="date">{{data.formattedDatetime}}</div>
+        </div>
+      <button type="button" class="modal-close-btn" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="headline">{{data.headline}}</div>
+        <div class="summary">{{data.summary}}</div>
+        <div class="link">For more details, click <a href="{{data.url}}" target="_blank">here</a></div>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <div class="d-flex flex-column share">
+            <span>Share</span>
+            <div class="d-flex flex-row share-buttons">
+                <a class="twitter-share-button" target="blank" href="https://twitter.com/intent/tweet?text={{data.headline}}&url={{data.url}}">
+                    <img src="../../assets/icons/twitter-brands.svg"/>
+                </a>
+                <a class="facebook-share-button" target="blank" href="https://www.facebook.com/sharer/sharer.php?u={{data.url}}">
+                    <img src="../../assets/icons/facebook-square-brands.svg"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</ng-template>   

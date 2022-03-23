@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { StateService } from 'src/services/state-service.service';
+import { NewsModalComponent } from '../news-modal/news-modal.component';
 
 @Component({
   selector: 'app-search-top-news',
@@ -7,6 +8,8 @@ import { StateService } from 'src/services/state-service.service';
   styleUrls: ['./search-top-news.component.css']
 })
 export class SearchTopNewsComponent implements OnInit {
+
+  @ViewChild(NewsModalComponent) newsModal: NewsModalComponent;
 
   newsItems: any;
 
@@ -28,7 +31,7 @@ export class SearchTopNewsComponent implements OnInit {
   }
 
   displayNewsModal(news) {
-    console.log(news);
+    this.newsModal.open(news);
   }
 
 

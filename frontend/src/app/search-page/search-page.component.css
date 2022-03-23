@@ -26,6 +26,7 @@
     background: none;
     outline: none;
     width: 100%;
+    text-transform: capitalize;
 }
 
 .search-box {
