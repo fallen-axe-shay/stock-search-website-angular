@@ -1,1 +1,41 @@
-<p>buy-stock-modal works!</p>
+<ng-template #content let-modal> 
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{state.getStockData().ticker}}</h4>
+      <button type="button" class="modal-close-btn" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex flex-column">
+            <div class="d-flex flex-row p-1">
+                <span class="modal-field-label">Current Price: </span>
+                <span>{{state.getStockData()['c']}}</span>
+            </div>
+            <div class="d-flex flex-row p-1">
+                <span class="modal-field-label">Money in Wallet: </span>
+                <span>${{state.getWalletAmount()}}</span>
+            </div>
+        </div>
+        <div class="d-flex flex-row p-1 align-items-center">
+            <span class="modal-field-label">Quantity: </span>
+            <form [formGroup]="purchaseForm" class="flex-grow-1">
+                <input class="qty-field" type="number"
+                    placeholder="Quantity"
+                    matInput
+                    formControlName="purchaseFormControl"
+                    name="stockPurchaseAmount"
+                    pattern="^[0-9]+"
+                    (keypress)="allowOnlyNumbers($event)"
+                    required>
+            </form>
+        </div>
+        <span *ngIf="state.getSearchPageFlags().invalidPurchase" class="invalid-purchase p-1">
+            Not enough money in wallet!
+        </span>
+    </div>
+    <div class="modal-footer justify-content-between">
+        <div class="d-flex flex-row">
+            <span class="modal-field-label">Total:</span>
+            <span>{{stockBuyTotal}}</span>
+        </div>
+        <button type="button" [disabled]="state.getWalletAmount()<stockBuyTotal" class="btn btn-success" (click)="(isPurchaseValid(stockBuyTotal) && buyStock(state.getStockData().ticker, this.purchaseForm.get('purchaseFormControl').value, stockBuyTotal, state.getStockData()['c']) && modal.close('Buy clicked'));">Buy</button>
+    </div>
+</ng-template>   

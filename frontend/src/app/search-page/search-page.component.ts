@@ -11,6 +11,7 @@ import { StateService } from 'src/services/state-service.service';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { SearchSummaryComponent } from '../search-summary/search-summary.component';
 import {NgbModal, ModalDismissReasons, NgbAlert} from '@ng-bootstrap/ng-bootstrap';
+import { BuyStockModalComponent } from '../buy-stock-modal/buy-stock-modal.component';
 
 @Component({
   selector: 'app-search-page',
@@ -23,23 +24,16 @@ export class SearchPageComponent implements OnInit {
     searchFormControl: new FormControl('')
   });
 
-  purchaseForm = new FormGroup({
-    purchaseFormControl: new FormControl(0)
-  });
-
   suggestions: any;
 
   noRequests: any;
   currentRequest: any;
   queryResult: any;
   currentTime: any;
-  modalCloseResult: any;
   watchlistAlert: any;
 
   intervalObject: any;
   timeoutObject: any;
-
-  stockBuyTotal: any;
 
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
@@ -49,7 +43,7 @@ export class SearchPageComponent implements OnInit {
     companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData']
   }
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService, private modalService: NgbModal) {
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService) {
     this.suggestions = [];
     this.noRequests = 0;
     this.currentRequest = 0;
@@ -60,11 +54,11 @@ export class SearchPageComponent implements OnInit {
     this.timeoutObject = null;
     this.state.getSearchPageFlags()['resultsReady'] && this.setSearchInterval(this.state.getStockData()['ticker']);
     this.watchlistAlert = {msg: "", type: null};
-    this.stockBuyTotal = 0;
    }
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
    @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
+   @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
 
   ngOnInit(): void {
@@ -98,9 +92,6 @@ export class SearchPageComponent implements OnInit {
       this.setCurrentTime();
     }, 60*1000);
 
-    this.purchaseForm.get('purchaseFormControl').valueChanges.subscribe((qty)=> {
-      this.stockBuyTotal = Math.round((this.state.getStockData()['c'] * qty) * 100) / 100;
-    });
   }
 
   clearWatchlistAlert() {
@@ -280,66 +271,6 @@ export class SearchPageComponent implements OnInit {
       clearTimeout(this.timeoutObject);
     }
     this.timeoutObject = setTimeout(() => {this.selfClosingAlert.close(), this.timeoutObject = null}, 2000);
-  }
-
-  /* Modal Operations */
-  open(content) {
-    this.purchaseForm.get('purchaseFormControl').setValue(0);
-    this.stockBuyTotal = 0;
-    this.state.addSearchPageFlags({invalidPurchase: false});
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.modalCloseResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.modalCloseResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-  allowOnlyNumbers(event) {
-    var charCode = (event.which) ? event.which : event.keyCode;
-    // Only Numbers 0-9
-    if ((charCode < 48 || charCode > 57)) {
-      event.preventDefault();
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  isPurchaseValid(amount) {
-    let result = this.state.getWalletAmount()>=amount;
-    this.state.addSearchPageFlags({invalidPurchase: !result});
-    return result;
-  }
-
-  buyStock(ticker, stockQty, amount, sharePrice) {
-    let balance = this.state.getWalletAmount();
-    balance = balance - amount;
-    this.state.setWalletAmount(balance);
-    let stocks = this.state.readFromLocalStorage('stocks');
-    if(stocks==null) {
-      stocks = {}
-    }
-    if(Object.keys(stocks).indexOf(ticker)==-1) {
-      stocks[ticker] = [];
-    }
-    for(var i = 0; i<stockQty; i++) {
-      stocks[ticker].push({
-        timestamp: (new Date).getTime(),
-        amount: sharePrice
-      });
-    }
-    this.state.addToLocalStorage('stocks', stocks);
-    return true;
   }
 
   /* Alert */
