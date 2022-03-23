@@ -29,7 +29,7 @@ export class BuyStockModalComponent implements OnInit {
       this.stockBuyTotal = Math.round((this.state.getStockData()['c'] * qty) * 100) / 100;
     });
 
-  }
+  } 
 
   /* Modal Operations */
   open() {
@@ -62,12 +62,6 @@ export class BuyStockModalComponent implements OnInit {
     } else {
       return true;
     }
-  }
-
-  isPurchaseValid(amount) {
-    let result = this.state.getWalletAmount()>=amount;
-    this.state.addSearchPageFlags({invalidPurchase: !result});
-    return result;
   }
 
   buyStock(ticker, stockQty, amount, sharePrice) {

@@ -21,6 +21,7 @@ import { SearchChartsComponent } from './search-charts/search-charts.component';
 import { SearchInsightsComponent } from './search-insights/search-insights.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { BuyStockModalComponent } from './buy-stock-modal/buy-stock-modal.component';
+import { SellStockModalComponent } from './sell-stock-modal/sell-stock-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { BuyStockModalComponent } from './buy-stock-modal/buy-stock-modal.compon
     SearchTopNewsComponent,
     SearchChartsComponent,
     SearchInsightsComponent,
-    BuyStockModalComponent
+    BuyStockModalComponent,
+    SellStockModalComponent
   ],
   imports: [
     BrowserModule,

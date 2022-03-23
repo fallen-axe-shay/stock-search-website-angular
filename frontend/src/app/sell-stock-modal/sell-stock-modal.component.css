@@ -1,0 +1,35 @@
+.modal-field-label {
+    margin-right: 5px;
+}
+
+.qty-field {
+    border-radius: 3px;
+    border: #afafaf;
+    border-style: solid;
+    border-width: 1px;
+    width: 200px;
+    height: 30px;
+    padding: 5px;
+}
+
+.invalid-purchase {
+    color: red;
+}
+
+.modal-close-btn {
+    background-color: transparent;
+    background-image: url('../../assets/icons/close.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 20px;
+    width: 20px;
+    border: none;
+}
+
+.modal-open {
+    overflow: scroll;
+}
+
+.modal-title {
+    font-size: 20px;
+}

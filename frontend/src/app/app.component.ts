@@ -10,7 +10,7 @@ export class AppComponent {
 
   constructor(private state: StateService) {
     if(this.state.getWalletAmount()==null) {
-      this.state.setWalletAmount(5000);
+      this.state.setWalletAmount(25000);
     }
   }
 

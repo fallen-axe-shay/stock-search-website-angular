@@ -12,6 +12,7 @@ import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { SearchSummaryComponent } from '../search-summary/search-summary.component';
 import {NgbModal, ModalDismissReasons, NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 import { BuyStockModalComponent } from '../buy-stock-modal/buy-stock-modal.component';
+import { SellStockModalComponent } from '../sell-stock-modal/sell-stock-modal.component';
 
 @Component({
   selector: 'app-search-page',
@@ -59,6 +60,7 @@ export class SearchPageComponent implements OnInit {
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
    @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
    @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
+   @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
 
   ngOnInit(): void {
