@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StateService } from 'src/services/state-service.service';
@@ -21,6 +21,8 @@ export class BuyStockModalComponent implements OnInit {
     this.stockBuyTotal = 0;
   }
 
+  @ViewChild('content', { static: false }) content: ElementRef;
+
   ngOnInit(): void {
 
     this.purchaseForm.get('purchaseFormControl').valueChanges.subscribe((qty)=> {
@@ -30,12 +32,11 @@ export class BuyStockModalComponent implements OnInit {
   }
 
   /* Modal Operations */
-  open(content) {
-    console.log(content)
+  open() {
     this.purchaseForm.get('purchaseFormControl').setValue(0);
     this.stockBuyTotal = 0;
     this.state.addSearchPageFlags({invalidPurchase: false});
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+    this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.modalCloseResult = `Closed with: ${result}`;
     }, (reason) => {
       this.modalCloseResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -71,7 +72,7 @@ export class BuyStockModalComponent implements OnInit {
 
   buyStock(ticker, stockQty, amount, sharePrice) {
     let balance = this.state.getWalletAmount();
-    balance = balance - amount;
+    balance = Math.round((balance - amount) * 100) / 100;
     this.state.setWalletAmount(balance);
     let stocks = this.state.readFromLocalStorage('stocks');
     if(stocks==null) {
