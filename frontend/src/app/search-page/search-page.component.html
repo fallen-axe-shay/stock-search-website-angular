@@ -36,6 +36,8 @@
     <ngb-alert [type]="'danger'" (closed)="closeAlert()" *ngIf="(state.getSearchPageFlags()).invalidTicker">Please enter a valid ticker</ngb-alert>
     <ngb-alert class="no-data" [type]="'danger'" [dismissible]="false" *ngIf="(state.getSearchPageFlags()).noStockData">No data found. Please enter a valid ticker</ngb-alert>
     <ngb-alert #selfClosingAlert class="add-remove-watchlist" (closed)="clearWatchlistAlert()" [type]="watchlistAlert.type" *ngIf="(state.getSearchPageFlags()).showWatchlistAlert">{{watchlistAlert.msg}}</ngb-alert>
+    <ngb-alert #selfClosingAlertBuy class="add-remove-watchlist" (closed)="clearBuySellAlert()" [type]="'success'" *ngIf="(state.getSearchPageFlags()).showBuyAlert">{{state.getStockData().ticker}} bought successfully</ngb-alert>
+    <ngb-alert #selfClosingAlertSell class="add-remove-watchlist" (closed)="clearBuySellAlert()" [type]="'danger'" *ngIf="(state.getSearchPageFlags()).showSellAlert">{{state.getStockData().ticker}} sold successfully</ngb-alert>
     <div *ngIf="(state.getSearchPageFlags()).resultsReady && !(state.getSearchPageFlags()).isSearching">
         <div class="d-flex flex-column col-10 m-auto">
             <div class="d-flex flex-row company-header">
@@ -87,5 +89,5 @@
 </div>
 
 <!-- Modal -->
-<app-buy-stock-modal></app-buy-stock-modal>
-<app-sell-stock-modal></app-sell-stock-modal>
+<app-buy-stock-modal (showBuyAlert)="showBuyAlert($event)"></app-buy-stock-modal>
+<app-sell-stock-modal (showSellAlert)="showSellAlert($event)"></app-sell-stock-modal>

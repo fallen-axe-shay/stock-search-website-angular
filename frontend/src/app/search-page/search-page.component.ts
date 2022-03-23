@@ -35,6 +35,7 @@ export class SearchPageComponent implements OnInit {
 
   intervalObject: any;
   timeoutObject: any;
+  timeoutObjectBuySell: any;
 
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
@@ -54,6 +55,7 @@ export class SearchPageComponent implements OnInit {
     this.state.getSearchPageFlags()['resultsReady'] && this.clearSearchInterval();
     this.intervalObject = null;
     this.timeoutObject = null;
+    this.timeoutObjectBuySell = null;
     this.state.getSearchPageFlags()['resultsReady'] && this.setSearchInterval(this.state.getStockData()['ticker']);
     this.watchlistAlert = {msg: "", type: null};
    }
@@ -63,6 +65,8 @@ export class SearchPageComponent implements OnInit {
    @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
    @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
+   @ViewChild('selfClosingAlertBuy', {static: false}) selfClosingAlertBuy: NgbAlert;
+   @ViewChild('selfClosingAlertSell', {static: false}) selfClosingAlertSell: NgbAlert;
 
   ngOnInit(): void {
     let ticker = this.route.snapshot.params.ticker;
@@ -99,6 +103,26 @@ export class SearchPageComponent implements OnInit {
 
   clearWatchlistAlert() {
     this.state.addSearchPageFlags({showWatchlistAlert: false});
+  }
+
+  showBuyAlert($event: any) {
+    this.state.addSearchPageFlags({showBuyAlert: true, showSellAlert: false});
+    if(this.timeoutObjectBuySell != null) {
+      clearTimeout(this.timeoutObjectBuySell);
+    }
+    this.timeoutObjectBuySell = setTimeout(() => {this.selfClosingAlertBuy.close(); this.timeoutObjectBuySell = null}, 2000);
+  }
+
+  showSellAlert() {
+    this.state.addSearchPageFlags({showSellAlert: true, showBuyAlert: false});
+    if(this.timeoutObjectBuySell != null) {
+      clearTimeout(this.timeoutObjectBuySell);
+    }
+    this.timeoutObjectBuySell = setTimeout(() => {this.selfClosingAlertSell.close(); this.timeoutObjectBuySell = null}, 2000);
+  }
+
+  clearBuySellAlert() {
+    this.state.addSearchPageFlags({showSellAlert: false, showBuyAlert: false});
   }
 
   setCurrentTime() {
@@ -278,7 +302,7 @@ export class SearchPageComponent implements OnInit {
     if(this.timeoutObject != null) {
       clearTimeout(this.timeoutObject);
     }
-    this.timeoutObject = setTimeout(() => {this.selfClosingAlert.close(), this.timeoutObject = null}, 2000);
+    this.timeoutObject = setTimeout(() => {this.selfClosingAlert.close(); this.timeoutObject = null}, 2000);
   }
 
   /* Alert */

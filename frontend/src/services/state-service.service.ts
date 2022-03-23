@@ -18,7 +18,9 @@ export class StateService {
                                                         invalidTicker: false,
                                                         noStockData: false,
                                                         showWatchlistAlert: false,
-                                                        invalidPurchase: false
+                                                        invalidPurchase: false,
+                                                        showBuyAlert: false,
+                                                        showSellAlert: false
                                                       });
 
   localStorage: any = window.localStorage;

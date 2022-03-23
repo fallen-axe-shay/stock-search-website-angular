@@ -46,7 +46,7 @@ export class SearchSummaryComponent implements OnInit {
     };
   }
 
-  @Output("searchTicker") searchTicker: EventEmitter<any> = new EventEmitter();
+  @Output("searchTicker") searchTicker: EventEmitter<any> = new EventEmitter(); 
 
   ngOnInit(): void {
     let ticker = this.state.getStockData()['ticker'];

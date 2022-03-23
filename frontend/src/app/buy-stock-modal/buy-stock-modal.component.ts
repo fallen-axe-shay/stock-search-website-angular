@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StateService } from 'src/services/state-service.service';
@@ -22,6 +22,7 @@ export class BuyStockModalComponent implements OnInit {
   }
 
   @ViewChild('content', { static: false }) content: ElementRef;
+  @Output("showBuyAlert") showBuyAlert: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
 
@@ -82,6 +83,7 @@ export class BuyStockModalComponent implements OnInit {
       });
     }
     this.state.addToLocalStorage('stocks', stocks);
+    this.showBuyAlert.emit(null);
     return true;
   }
 
