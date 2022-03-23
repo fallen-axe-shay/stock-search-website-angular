@@ -41,7 +41,8 @@ export class SearchPageComponent implements OnInit {
     companyProfile: ['Profile', '/api/getCompanyProfile'],
     companyQuote: ['Stock', '/api/getCompanyQuote'],
     companyPeers: ['Peers', '/api/getCompanyPeers'],
-    companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData']
+    companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData'],
+    companyNews: ['News', 'api/getCompanyNews']
   }
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService) {
@@ -170,7 +171,7 @@ export class SearchPageComponent implements OnInit {
     let error = false;
     return new Promise((resolve, reject) => {
       let resCount = 0;
-      let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers];
+      let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers, this.requestURLs.companyNews];
       requests.forEach((item)=> {
         if(error) {
           console.log(error)
@@ -187,6 +188,11 @@ export class SearchPageComponent implements OnInit {
             case 'Peers':
               res = {
                 peers: res
+              }
+              break;
+            case 'News':
+              res = {
+                news: res
               }
               break;
             default:

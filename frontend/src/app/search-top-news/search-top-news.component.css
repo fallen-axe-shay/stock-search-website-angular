@@ -1,0 +1,28 @@
+.news-items .image img {
+    height: 120px;
+    width: 120px;
+    object-fit: contain;
+    object-position: center;
+    padding: 10px;
+}
+
+.news-items .title {
+    font-size: 15px;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.news-items {
+    width: 48%;
+    margin: 10px;
+    background-color: white;
+    border-radius: 5px;
+    border-color: rgb(175, 175, 175);
+    border-style: solid;
+    border-width: 2px;
+    cursor: pointer;
+}
+
+.news-container {
+    margin-top: 20px;
+}

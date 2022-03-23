@@ -1,1 +1,8 @@
-<p>search-top-news works!</p>
+<div class="d-flex flex-wrap flex-row justify-content-between news-container">
+    <div *ngFor="let news of newsItems" class="d-flex flex-row align-items-center news-items" (click)="displayNewsModal(news)">
+        <div class="image">
+            <img src="{{news.image}}"/>
+        </div>
+        <div class="title">{{news.headline}}</div>
+    </div>
+</div>
