@@ -10,6 +10,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { StateService } from 'src/services/state-service.service';
 import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { SearchSummaryComponent } from '../search-summary/search-summary.component';
+import {NgbModal, ModalDismissReasons, NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-search-page',
@@ -28,8 +29,11 @@ export class SearchPageComponent implements OnInit {
   currentRequest: any;
   queryResult: any;
   currentTime: any;
+  modalCloseResult: any;
+  watchlistAlert: any;
 
   intervalObject: any;
+  timeoutObject: any;
 
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
@@ -39,7 +43,7 @@ export class SearchPageComponent implements OnInit {
     companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData']
   }
 
-  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService) {
+  constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService, private modalService: NgbModal) {
     this.suggestions = [];
     this.noRequests = 0;
     this.currentRequest = 0;
@@ -47,11 +51,14 @@ export class SearchPageComponent implements OnInit {
     this.setCurrentTime();
     this.state.getSearchPageFlags()['resultsReady'] && this.clearSearchInterval();
     this.intervalObject = null;
+    this.timeoutObject = null;
     this.state.getSearchPageFlags()['resultsReady'] && this.setSearchInterval(this.state.getStockData()['ticker']);
+    this.watchlistAlert = {msg: "", type: null};
    }
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
    @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
+   @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
 
   ngOnInit(): void {
     let ticker = this.route.snapshot.params.ticker;
@@ -85,6 +92,10 @@ export class SearchPageComponent implements OnInit {
     }, 60*1000);
   }
 
+  clearWatchlistAlert() {
+    this.state.addSearchPageFlags({showWatchlistAlert: false});
+  }
+
   setCurrentTime() {
     let today = new Date();
     var date = today.getFullYear()+'-'+this.zeroPad(today.getMonth()+1, 2)+'-'+this.zeroPad(today.getDate(),2);
@@ -109,7 +120,7 @@ export class SearchPageComponent implements OnInit {
 
   resetURL(): void {
     this.location.replaceState("/search/home");
-    this.state.addSearchPageFlags({resultsReady: false, isSearching: false});
+    this.state.addSearchPageFlags({resultsReady: false, isSearching: false, invalidTicker: false, noStockData: false});
     this.intervalObject && clearInterval(this.intervalObject);
   }
 
@@ -119,6 +130,7 @@ export class SearchPageComponent implements OnInit {
 
   searchTicker($event: any) {
     let ticker = Array.isArray($event) ? $event[0].toUpperCase() : $event.toUpperCase();
+    this.state.addSearchPageFlags({invalidTicker: false, noStockData: false});
     this.clearSearchInterval();
     this.intervalObject = null;
     this.queryResult = {};
@@ -133,7 +145,17 @@ export class SearchPageComponent implements OnInit {
       );
     this.state.setStockData({});
     !Array.isArray($event) && this.changeURL(ticker);
+    if(ticker.trim()=='') {
+      this.state.addSearchPageFlags({isSearching: false, invalidTicker: true});
+      return;
+    }
     this.getStockDetails(ticker);
+    this.setStar(ticker);
+  }
+
+  setStar(ticker) {
+    let watchlist = this.state.readFromLocalStorage('watchlist');
+    this.state.addSearchPageFlags({isStarred: (watchlist!=null && watchlist.indexOf(ticker)!=-1)});
   }
 
   clearSearchInterval() {
@@ -141,10 +163,15 @@ export class SearchPageComponent implements OnInit {
   }
 
   makeRequests(ticker, refresh = false) {
+    let error = false;
     return new Promise((resolve, reject) => {
       let resCount = 0;
       let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers];
       requests.forEach((item)=> {
+        if(error) {
+          console.log(error)
+          return false;
+        }
         let url;
         switch(item[0]) {
           default:
@@ -161,6 +188,11 @@ export class SearchPageComponent implements OnInit {
             default:
               //Do nothing
           }
+          if(Object.keys(res).length==0) {
+            this.showError();
+            error = true;
+            return;
+          }
           this.queryResult = Object.assign({...res}, {...this.queryResult});
           if(resCount==requests.length) {
             let datetime = new Date(this.queryResult['t']*1000);
@@ -176,7 +208,7 @@ export class SearchPageComponent implements OnInit {
             this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
             this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
             this.state.addStockData(this.queryResult);
-            !refresh && this.state.addSearchPageFlags({resultsReady: true, isSearching: false});
+            !refresh && this.state.addSearchPageFlags({resultsReady: !error, isSearching: false});
             !refresh && this.setSearchInterval(ticker);
             resolve(true);
           }
@@ -199,11 +231,68 @@ export class SearchPageComponent implements OnInit {
   }
 
   showError(): void {
-    this.state.addSearchPageFlags({isSearching: false});
+    this.state.addSearchPageFlags({isSearching: false, noStockData: true, resultsReady: false});
   }
 
   zeroPad(num, places) {
     return String(num).padStart(places, '0');
+  }
+
+  addRemoveWatchlist() {
+    let watchlist, ticker;
+    ticker = this.state.getStockData().ticker;
+    if(this.state.getSearchPageFlags().isStarred) {
+      this.watchlistAlert.msg = `${ticker} added to Watchlist`;
+      this.watchlistAlert.type = 'success';
+      watchlist = this.state.readFromLocalStorage('watchlist');
+      if(watchlist == null) {
+        watchlist = [];
+      }
+      if(watchlist.indexOf(ticker)==-1) {
+        watchlist.push(ticker);
+        this.state.addToLocalStorage('watchlist', watchlist);
+      }
+    } else {
+      this.watchlistAlert.msg = `${ticker} removed from Watchlist`;
+      this.watchlistAlert.type = 'danger';
+      watchlist = this.state.readFromLocalStorage('watchlist');
+      if(watchlist != null) {
+        let index = watchlist.indexOf(ticker);
+        if (index > -1) {
+          watchlist.splice(index, 1); // 2nd parameter means remove one item only
+        }
+        this.state.addToLocalStorage('watchlist', watchlist);
+      }
+    }
+    this.state.addSearchPageFlags({showWatchlistAlert: true});
+    if(this.timeoutObject != null) {
+      clearTimeout(this.timeoutObject);
+    }
+    this.timeoutObject = setTimeout(() => {this.selfClosingAlert.close(), this.timeoutObject = null}, 2000);
+  }
+
+  /* Modal Operations */
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.modalCloseResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.modalCloseResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
+  }
+
+  /* Alert */
+  closeAlert() {
+    this.state.addSearchPageFlags({invalidTicker: false});
   }
   
 }

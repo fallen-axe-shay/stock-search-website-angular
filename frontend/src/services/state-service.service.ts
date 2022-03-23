@@ -14,8 +14,13 @@ export class StateService {
                                                         logoError: false,
                                                         isProfit: false,
                                                         isMarketOpen: false,
-                                                        currentSearch: ''
+                                                        currentSearch: '',
+                                                        invalidTicker: false,
+                                                        noStockData: false,
+                                                        showWatchlistAlert: false
                                                       });
+
+  localStorage: any = window.localStorage;
 
 
   get stockData(): any {
@@ -25,7 +30,6 @@ export class StateService {
   get searchPageFlags(): any {
     return this._searchPageFlags.getValue();
   }
-
 
   set stockData(val: any) {
     this._stockData.next(val);
@@ -57,6 +61,21 @@ export class StateService {
 
   getSearchPageFlags() {
     return this.searchPageFlags;
+  }
+
+  addToLocalStorage(key, value) {
+    console.log(key, value)
+    this.localStorage.setItem(key, JSON.stringify(value));
+  }
+
+  readFromLocalStorage(key) {
+    return JSON.parse(this.localStorage.getItem(key));
+  }
+
+  removeFromLocalStorage(key) {
+    let item = JSON.parse(this.localStorage.getItem(key));
+    this.localStorage.removeItem(key);
+    return item;
   }
 
 }
