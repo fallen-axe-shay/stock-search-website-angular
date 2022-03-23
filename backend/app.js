@@ -85,6 +85,22 @@ app.get('/getCompanyHistoricalData/:ticker/:time', (req, res) => {
   })
 });
 
+app.get('/getCompanyNews/:ticker', (req, res) => {
+  let data = {
+    token: _GLOBAL.FH_API_KEY,
+    symbol: req.params.ticker,
+    from: getFormattedYear((new Date()).getTime() - 30*24*60*60*1000),
+    to: getFormattedYear((new Date()).getTime())
+  }
+  axios.get('https://finnhub.io/api/v1/company-news', {params: data})
+  .then(fhRes => {
+    res.status(fhRes.status).json(fhRes.data);
+  })
+  .catch(error => {
+    res.status(500).json({message: error});
+  })
+});
+
 // Start the server
 const PORT = parseInt(process.env.PORT) || 8080;
 app.listen(PORT, () => {
@@ -94,3 +110,14 @@ app.listen(PORT, () => {
 // [END gae_node_request_example]
 
 module.exports = app;
+
+
+function getFormattedYear(time) {
+  let today = new Date(time);
+  var date = today.getFullYear()+'-' + zeroPad(today.getMonth()+1, 2)+'-' + zeroPad(today.getDate(), 2);
+  return date;
+}
+
+function zeroPad(num, places) {
+  return String(num).padStart(places, '0');
+}

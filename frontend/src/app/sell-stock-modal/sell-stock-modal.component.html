@@ -1,6 +1,6 @@
 <ng-template #content let-modal> 
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">{{state.getStockData().ticker}}</h4>
+      <h4 class="modal-title" id="modal-basic-title"><a href="/search/{{state.getStockData().ticker}}">{{state.getStockData().ticker}}</a></h4>
       <button type="button" class="modal-close-btn" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">

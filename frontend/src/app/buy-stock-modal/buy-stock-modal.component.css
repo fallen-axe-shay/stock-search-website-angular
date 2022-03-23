@@ -33,3 +33,12 @@
 .modal-title {
     font-size: 20px;
 }
+
+.modal-title a {
+    color: black;
+}
+
+.modal-title a:hover {
+    text-decoration: none;
+    color: black;
+}
