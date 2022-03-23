@@ -17,11 +17,11 @@ export class StateService {
                                                         currentSearch: '',
                                                         invalidTicker: false,
                                                         noStockData: false,
-                                                        showWatchlistAlert: false
+                                                        showWatchlistAlert: false,
+                                                        invalidPurchase: false
                                                       });
 
   localStorage: any = window.localStorage;
-
 
   get stockData(): any {
     return this._stockData.getValue();
@@ -64,7 +64,6 @@ export class StateService {
   }
 
   addToLocalStorage(key, value) {
-    console.log(key, value)
     this.localStorage.setItem(key, JSON.stringify(value));
   }
 
@@ -76,6 +75,14 @@ export class StateService {
     let item = JSON.parse(this.localStorage.getItem(key));
     this.localStorage.removeItem(key);
     return item;
+  }
+
+  getWalletAmount() {
+    return this.readFromLocalStorage('wallet');
+  }
+
+  setWalletAmount(amount) {
+    this.addToLocalStorage('wallet', amount);
   }
 
 }

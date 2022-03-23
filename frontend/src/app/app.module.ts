@@ -20,6 +20,7 @@ import { SearchTopNewsComponent } from './search-top-news/search-top-news.compon
 import { SearchChartsComponent } from './search-charts/search-charts.component';
 import { SearchInsightsComponent } from './search-insights/search-insights.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { BuyStockModalComponent } from './buy-stock-modal/buy-stock-modal.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HighchartsChartModule } from 'highcharts-angular';
     SearchSummaryComponent,
     SearchTopNewsComponent,
     SearchChartsComponent,
-    SearchInsightsComponent
+    SearchInsightsComponent,
+    BuyStockModalComponent
   ],
   imports: [
     BrowserModule,

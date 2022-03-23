@@ -23,6 +23,10 @@ export class SearchPageComponent implements OnInit {
     searchFormControl: new FormControl('')
   });
 
+  purchaseForm = new FormGroup({
+    purchaseFormControl: new FormControl(0)
+  });
+
   suggestions: any;
 
   noRequests: any;
@@ -34,6 +38,8 @@ export class SearchPageComponent implements OnInit {
 
   intervalObject: any;
   timeoutObject: any;
+
+  stockBuyTotal: any;
 
   requestURLs: any = {
     autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
@@ -54,6 +60,7 @@ export class SearchPageComponent implements OnInit {
     this.timeoutObject = null;
     this.state.getSearchPageFlags()['resultsReady'] && this.setSearchInterval(this.state.getStockData()['ticker']);
     this.watchlistAlert = {msg: "", type: null};
+    this.stockBuyTotal = 0;
    }
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
@@ -90,6 +97,10 @@ export class SearchPageComponent implements OnInit {
     setInterval(() => {
       this.setCurrentTime();
     }, 60*1000);
+
+    this.purchaseForm.get('purchaseFormControl').valueChanges.subscribe((qty)=> {
+      this.stockBuyTotal = Math.round((this.state.getStockData()['c'] * qty) * 100) / 100;
+    });
   }
 
   clearWatchlistAlert() {
@@ -273,6 +284,9 @@ export class SearchPageComponent implements OnInit {
 
   /* Modal Operations */
   open(content) {
+    this.purchaseForm.get('purchaseFormControl').setValue(0);
+    this.stockBuyTotal = 0;
+    this.state.addSearchPageFlags({invalidPurchase: false});
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.modalCloseResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -288,6 +302,44 @@ export class SearchPageComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  allowOnlyNumbers(event) {
+    var charCode = (event.which) ? event.which : event.keyCode;
+    // Only Numbers 0-9
+    if ((charCode < 48 || charCode > 57)) {
+      event.preventDefault();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  isPurchaseValid(amount) {
+    let result = this.state.getWalletAmount()>=amount;
+    this.state.addSearchPageFlags({invalidPurchase: !result});
+    return result;
+  }
+
+  buyStock(ticker, stockQty, amount, sharePrice) {
+    let balance = this.state.getWalletAmount();
+    balance = balance - amount;
+    this.state.setWalletAmount(balance);
+    let stocks = this.state.readFromLocalStorage('stocks');
+    if(stocks==null) {
+      stocks = {}
+    }
+    if(Object.keys(stocks).indexOf(ticker)==-1) {
+      stocks[ticker] = [];
+    }
+    for(var i = 0; i<stockQty; i++) {
+      stocks[ticker].push({
+        timestamp: (new Date).getTime(),
+        amount: sharePrice
+      });
+    }
+    this.state.addToLocalStorage('stocks', stocks);
+    return true;
   }
 
   /* Alert */
