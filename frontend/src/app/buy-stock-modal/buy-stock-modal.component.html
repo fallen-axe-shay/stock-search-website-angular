@@ -27,7 +27,7 @@
                     required>
             </form>
         </div>
-        <span *ngIf="state.getSearchPageFlags().invalidPurchase" class="invalid-purchase p-1">
+        <span *ngIf="state.getWalletAmount()<stockBuyTotal" class="invalid-purchase p-1">
             Not enough money in wallet!
         </span>
     </div>
