@@ -51,12 +51,12 @@ import { NewsModalComponent } from './news-modal/news-modal.component';
     MatTabsModule,
     HighchartsChartModule,
     RouterModule.forRoot([
-      {path: 'search/:ticker', component: SearchPageComponent},
-      {path: '', redirectTo: 'search/home', pathMatch: 'full'},
-      {path: 'watchlist', component: WatchlistComponent},
-      {path: 'portfolio', component: PortfolioComponent},
-      {path: '**', component: SearchPageComponent} // Wildcard route for a 404 page
-    ])
+    { path: 'search/:ticker', component: SearchPageComponent },
+    { path: '', redirectTo: 'search/home', pathMatch: 'full' },
+    { path: 'watchlist', component: WatchlistComponent },
+    { path: 'portfolio', component: PortfolioComponent },
+    { path: '**', component: SearchPageComponent } // Wildcard route for a 404 page
+], { relativeLinkResolution: 'legacy' })
   ],
   providers: [
   ],
