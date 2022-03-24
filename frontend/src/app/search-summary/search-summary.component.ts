@@ -12,7 +12,7 @@ export class SearchSummaryComponent implements OnInit {
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
-  updateFlag = false;
+  updateFlag = false; 
 
   constructor(public state: StateService, private httpClient: HttpClient) { 
     this.chartOptions = {

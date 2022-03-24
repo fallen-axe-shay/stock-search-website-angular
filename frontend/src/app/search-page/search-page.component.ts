@@ -13,6 +13,7 @@ import { SearchSummaryComponent } from '../search-summary/search-summary.compone
 import {NgbModal, ModalDismissReasons, NgbAlert} from '@ng-bootstrap/ng-bootstrap';
 import { BuyStockModalComponent } from '../buy-stock-modal/buy-stock-modal.component';
 import { SellStockModalComponent } from '../sell-stock-modal/sell-stock-modal.component';
+import { SearchChartsComponent } from '../search-charts/search-charts.component';
 
 @Component({
   selector: 'app-search-page',
@@ -62,6 +63,7 @@ export class SearchPageComponent implements OnInit {
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
    @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
+   @ViewChild(SearchChartsComponent) searchCharts: SearchChartsComponent;
    @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
    @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
@@ -113,7 +115,7 @@ export class SearchPageComponent implements OnInit {
     this.timeoutObjectBuySell = setTimeout(() => {this.selfClosingAlertBuy.close(); this.timeoutObjectBuySell = null}, 2000);
   }
 
-  showSellAlert() {
+  showSellAlert($event) {
     this.state.addSearchPageFlags({showSellAlert: true, showBuyAlert: false});
     if(this.timeoutObjectBuySell != null) {
       clearTimeout(this.timeoutObjectBuySell);
@@ -260,6 +262,7 @@ export class SearchPageComponent implements OnInit {
     this.setCurrentTime();
     this.makeRequests(ticker, true).then((result)=> {
       this.searchSummary.showSummaryData(ticker);
+      this.searchCharts.showHistoryData(ticker);
     });
 
   }
