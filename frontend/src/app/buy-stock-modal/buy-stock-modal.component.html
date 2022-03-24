@@ -7,11 +7,11 @@
         <div class="d-flex flex-column">
             <div class="d-flex flex-row p-1">
                 <span class="modal-field-label">Current Price: </span>
-                <span>{{state.getStockData()['c']}}</span>
+                <span>{{state.getStockData()['c'].toFixed(2)}}</span>
             </div>
             <div class="d-flex flex-row p-1">
                 <span class="modal-field-label">Money in Wallet: </span>
-                <span>${{state.getWalletAmount()}}</span>
+                <span>${{state.getWalletAmount().toFixed(2)}}</span>
             </div>
         </div>
         <div class="d-flex flex-row p-1 align-items-center">
@@ -34,7 +34,7 @@
     <div class="modal-footer justify-content-between">
         <div class="d-flex flex-row">
             <span class="modal-field-label">Total:</span>
-            <span>{{stockBuyTotal}}</span>
+            <span>{{stockBuyTotal.toFixed(2)}}</span>
         </div>
         <button type="button" [disabled]="purchaseForm.get('purchaseFormControl').value<=0 || state.getWalletAmount()<stockBuyTotal" class="btn btn-success" (click)="(buyStock(state.getStockData().ticker, this.purchaseForm.get('purchaseFormControl').value, stockBuyTotal, state.getStockData()['c']) && modal.close('Buy clicked'));">Buy</button>
     </div>

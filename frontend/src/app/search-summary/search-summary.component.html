@@ -2,10 +2,10 @@
     <div class="d-flex flex-row">
         <div class="d-flex flex-column flex-grow-1">
             <div class="d-flex flex-column stock-price-summary">
-                <div class="d-flex"><span class="bold">High Price: </span><span>{{state.getStockData()['h']}}</span></div>
-                <div class="d-flex"><span class="bold">Low Price: </span><span>{{state.getStockData()['l']}}</span></div>
-                <div class="d-flex"><span class="bold">Open Price: </span><span>{{state.getStockData()['o']}}</span></div>
-                <div class="d-flex"><span class="bold">Prev. Close: </span><span>{{state.getStockData()['pc']}}</span></div>
+                <div class="d-flex"><span class="bold">High Price: </span><span>{{state.getStockData()['h'].toFixed(2)}}</span></div>
+                <div class="d-flex"><span class="bold">Low Price: </span><span>{{state.getStockData()['l'].toFixed(2)}}</span></div>
+                <div class="d-flex"><span class="bold">Open Price: </span><span>{{state.getStockData()['o'].toFixed(2)}}</span></div>
+                <div class="d-flex"><span class="bold">Prev. Close: </span><span>{{state.getStockData()['pc'].toFixed(2)}}</span></div>
             </div>
             <span class="d-flex justify-content-center"><span class="bold underline">About the company</span></span>
             <div class="d-flex flex-column company-details-summary">

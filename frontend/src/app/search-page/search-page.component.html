@@ -60,7 +60,7 @@
                     <img class="company-logo" *ngIf="!(state.getSearchPageFlags()).logoError" src="{{state.getStockData()['logo']}}" (error)="state.addSearchPageFlags({logoError: true})"/>
                 </div>
                 <div class="stock-prices d-flex flex-column col-4" [class.green]="(state.getSearchPageFlags()).isProfit"  [class.red]="!(state.getSearchPageFlags()).isProfit">
-                    <div class="price d-flex justify-content-end p-1 pb-2 pt-2">{{state.getStockData()['c']}}</div>
+                    <div class="price d-flex justify-content-end p-1 pb-2 pt-2">{{state.getStockData()['c'].toFixed(2)}}</div>
                     <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2">
                         <span class="arrow mr-2" [class.green]="(state.getSearchPageFlags()).isProfit" [class.red]="!(state.getSearchPageFlags()).isProfit"></span>
                         <span class="change-amount">{{state.getStockData()['d']}} ({{state.getStockData()['dp']}})</span>
