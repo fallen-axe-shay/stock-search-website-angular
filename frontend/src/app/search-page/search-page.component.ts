@@ -63,7 +63,6 @@ export class SearchPageComponent implements OnInit {
 
    @ViewChild(MatAutocompleteTrigger) autocomplete: MatAutocompleteTrigger;
    @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
-   @ViewChild(SearchChartsComponent) searchCharts: SearchChartsComponent;
    @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
    @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
@@ -262,7 +261,6 @@ export class SearchPageComponent implements OnInit {
     this.setCurrentTime();
     this.makeRequests(ticker, true).then((result)=> {
       this.searchSummary.showSummaryData(ticker);
-      this.searchCharts.showHistoryData(ticker);
     });
 
   }

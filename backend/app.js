@@ -85,6 +85,23 @@ app.get('/getCompanyHistoricalData/:ticker/:time', (req, res) => {
   })
 });
 
+app.get('/getCompanyHistoricalDataTwoYears/:ticker/:time', (req, res) => {
+  let data = {
+    token: _GLOBAL.FH_API_KEY,
+    symbol: req.params.ticker,
+    resolution: 'D',
+    from: parseInt(req.params.time) - (2*365*24*60*60),
+    to: req.params.time
+  }
+  axios.get('https://finnhub.io/api/v1/stock/candle', {params: data})
+  .then(fhRes => {
+    res.status(fhRes.status).json(fhRes.data);
+  })
+  .catch(error => {
+    res.status(500).json({message: error});
+  })
+});
+
 app.get('/getCompanyNews/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,

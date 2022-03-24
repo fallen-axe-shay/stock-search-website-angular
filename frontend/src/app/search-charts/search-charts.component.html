@@ -1,5 +1,5 @@
-<div class="charts-tab">
-    <highcharts-chart 
+<div class="charts-tab d-flex justify-content-center">
+    <highcharts-chart *ngIf="isChartReady" 
         [Highcharts]="Highcharts"
         [options]="chartOptions"
         [(update)]="updateFlag"
