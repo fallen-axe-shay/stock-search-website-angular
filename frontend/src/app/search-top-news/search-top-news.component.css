@@ -13,7 +13,6 @@
 }
 
 .news-items {
-    width: 48%;
     margin: 10px;
     background-color: white;
     border-radius: 5px;
@@ -26,3 +25,5 @@
 .news-container {
     margin-top: 20px;
 }
+
+@media all and (max-width: 768px) { .news-items{ flex-wrap: wrap;} }

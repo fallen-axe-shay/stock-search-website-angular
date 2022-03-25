@@ -97,6 +97,7 @@ mat-option .option-desc {
 
 .company-header .company-logo {
     height: 120px;
+    max-width: 500px;
 }
 
 .company-header .ticker {

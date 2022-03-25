@@ -1,7 +1,4 @@
 <div class="charts-tab d-flex justify-content-center">
-    <div *ngIf="(state.getSearchPageFlags()).isSearching" class="d-flex justify-content-center mt-5">
-        <mat-spinner  diameter="70"></mat-spinner>
-    </div>
     <highcharts-chart *ngIf="state.getSearchPageFlags().isHistoricChartReady" 
         [Highcharts]="state.getHighChartsData().highchart"
         [options]="state.getHighChartsData().options"

@@ -1,5 +1,5 @@
 <div class="d-flex flex-wrap flex-row justify-content-between news-container">
-    <div *ngFor="let news of newsItems" class="d-flex flex-row align-items-center news-items" (click)="displayNewsModal(news)">
+    <div *ngFor="let news of newsItems" class="d-flex flex-row align-items-center news-items col-md-5 col-sm-12 justify-content-center" (click)="displayNewsModal(news)">
         <div class="image">
             <img src="{{news.image}}"/>
         </div>
