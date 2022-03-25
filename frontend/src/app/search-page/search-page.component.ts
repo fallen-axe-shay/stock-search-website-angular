@@ -65,6 +65,7 @@ export class SearchPageComponent implements OnInit {
    @ViewChild(SearchSummaryComponent) searchSummary: SearchSummaryComponent;
    @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
    @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
+   @ViewChild(SearchChartsComponent) searchCharts: SearchChartsComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
    @ViewChild('selfClosingAlertBuy', {static: false}) selfClosingAlertBuy: NgbAlert;
    @ViewChild('selfClosingAlertSell', {static: false}) selfClosingAlertSell: NgbAlert;
@@ -145,7 +146,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   getStockDetails(ticker): void {
-    this.makeRequests(ticker);
+    this.makeRequests(ticker).then((result=> {setTimeout(()=> {this.searchCharts.showHistoryData(ticker)}, 10);}));
   }
 
   resetURL(): void {

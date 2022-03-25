@@ -40,7 +40,6 @@ export class SearchChartsComponent implements OnInit {
 
   ngOnInit(): void {
     let ticker = this.state.getStockData()['ticker'];
-    this.showHistoryData(ticker);
   }
 
   dateWithTimeZone(date) {  
