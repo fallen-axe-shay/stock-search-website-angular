@@ -7,8 +7,8 @@
 }
 
 .arrow {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     background-position: center;
     background-size: cover;
     content: "";
@@ -35,7 +35,7 @@
 .watchlist-containers {
     background-color: white;
     border-radius: 2px;
-    border: gray;
+    border: rgb(173, 173, 173);
     border-width: 1px;
     border-style: solid;
 }

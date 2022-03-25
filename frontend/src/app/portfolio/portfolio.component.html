@@ -2,14 +2,49 @@
     <span class="text-left mb-2"><h1>My Portfolio</h1></span>
     <span class="text-left mb-4"><h2>Money in Wallet: ${{state.readFromLocalStorage('wallet').toFixed(2)}}</h2></span>
     <ngb-alert [type]="'warning'" [dismissible]="false" *ngIf="(portfolioList | json)===({} | json)" class="text-center">Currently you don't have any stock</ngb-alert>
-    <div *ngFor="let ticker of portfolioList | keyvalue" class="portfolio-containers mb-2 col-12">
-        <div class="d-flex flex-row p-2 gray-bg header">
-            <span>{{ticker}}</span>
-            <span class="ml-2">{{portfolioData[ticker]['name']}}</span>
+    <div *ngFor="let ticker of portfolioList | keyvalue" class="portfolio-containers mb-2 col-12 d-flex flex-column justify-content-between pl-0 pr-0">
+        <div class="d-flex flex-row p-2 gray-bg header col-12">
+            <span class="ticker">{{ticker.key}}</span>
+            <span class="ml-2 name">{{portfolioData[ticker.key]['name']}}</span>
         </div>
-        <div class="d-flex flex-row p-2 gray-bg footer justify-content-end">
-            <button type="button" class="btn btn-primary mr-2" (click)="buyStockModal.open()">Buy</button>
-            <button type="button" class="btn btn-danger mr-2" (click)="buyStockModal.open()">Sell</button>
+        <div class="d-flex flex-row col-12 content">
+            <div class="d-flex flex-column col-6 p-2">
+                <div class="d-flex flex-row pt-1 pb-1">
+                    <span class="col-8 text-left">Quantity: </span>
+                    <span class="col-4 text-right">{{ticker.value.length}}</span>
+                </div>
+                <div class="d-flex flex-row pt-1 pb-1">
+                    <span class="col-8 text-left">Avg. Cost / Share: </span>
+                    <span class="col-4 text-right">{{(getTotalCost(ticker.value)/ticker.value.length).toFixed(2)}}</span>
+                </div>
+                <div class="d-flex flex-row pt-1 pb-1">
+                    <span class="col-8 text-left">Total Cost: </span>
+                    <span class="col-4 text-right">{{getTotalCost(ticker.value).toFixed(2)}}</span>
+                </div>
+            </div>
+            <div class="d-flex flex-column col-6 p-2">
+                <div class="d-flex flex-row pt-1 pb-1">
+                    <span class="col-8 text-left">Change: </span>
+                    <span class="col-4 text-right" *ngIf="portfolioData[ticker.key]['c']" [class.green]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))>0" [class.red]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))<0">
+                        <div class="d-flex flex-row justify-content-end align-items-center">
+                            <span class="arrow mr-2"></span>
+                            <span>{{(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length)).toFixed(2)}}</span>
+                        </div>
+                    </span>
+                </div>
+                <div class="d-flex flex-row pt-1 pb-1">
+                    <span class="col-8 text-left">Current Price: </span>
+                    <span class="col-4 text-right" *ngIf="portfolioData[ticker.key]['c']" [class.green]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))>0" [class.red]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))<0">{{portfolioData[ticker.key]['c']}}</span>
+                </div>
+                <div class="d-flex flex-row pt-1 pb-1">
+                    <span class="col-8 text-left">Market Value: </span>
+                    <span class="col-4 text-right" *ngIf="portfolioData[ticker.key]['c']" [class.green]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))>0" [class.red]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))<0">{{(portfolioData[ticker.key]['c']*ticker.value.length).toFixed(2)}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-row p-2 gray-bg footer justify-content-end col-12">
+            <button type="button" class="btn btn-primary mr-2">Buy</button>
+            <button type="button" class="btn btn-danger mr-2">Sell</button>
         </div>
     </div>
 </div>
