@@ -22,7 +22,9 @@ export class StateService {
                                                         isHistoricChartReady: false,
                                                         isEarningDataPresent: false,
                                                         isRecommendationChartReady:  false,
-                                                        isHistoricalEPSChartReady: false
+                                                        isHistoricalEPSChartReady: false,
+                                                        showPortfolioBuyAlert: false,
+                                                        showPortfolioSellAlert: false
                                                       });
   readonly _navBarMenu = new BehaviorSubject<any>({});
   readonly _currentBuySellDetails = new BehaviorSubject<any>({});

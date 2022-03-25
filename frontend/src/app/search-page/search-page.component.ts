@@ -57,7 +57,7 @@ export class SearchPageComponent implements OnInit {
     this.state.getSearchPageFlags()['resultsReady'] && this.clearSearchInterval();
     this.intervalObject = null;
     this.timeoutObject = null;
-    this.timeoutObjectBuySell = null;
+    this.timeoutObjectBuySell = null; 
     this.state.getSearchPageFlags()['resultsReady'] && this.setSearchInterval(this.state.getStockData()['ticker']);
     this.watchlistAlert = {msg: "", type: null};
    }
