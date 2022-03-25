@@ -14,28 +14,20 @@ export class BuyStockModalComponent implements OnInit {
     purchaseFormControl: new FormControl(0)
   });
 
-  stockBuyTotal: any;
   modalCloseResult: any;
 
   constructor(public state: StateService,  private modalService: NgbModal) { 
-    this.stockBuyTotal = 0;
   }
 
   @ViewChild('content', { static: false }) content: ElementRef;
   @Output("showBuyAlert") showBuyAlert: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
-
-    this.purchaseForm.get('purchaseFormControl').valueChanges.subscribe((qty)=> {
-      this.stockBuyTotal = Math.round((this.state.getStockData()['c'] * qty) * 100) / 100;
-    });
-
   } 
 
   /* Modal Operations */
   open() {
     this.purchaseForm.get('purchaseFormControl').setValue(0);
-    this.stockBuyTotal = 0;
     this.state.addSearchPageFlags({invalidPurchase: false});
     this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.modalCloseResult = `Closed with: ${result}`;
@@ -67,7 +59,7 @@ export class BuyStockModalComponent implements OnInit {
 
   buyStock(ticker, stockQty, amount, sharePrice) {
     let balance = this.state.getWalletAmount();
-    balance = Math.round((balance - amount) * 100) / 100;
+    balance = balance - amount;
     this.state.setWalletAmount(balance);
     let stocks = this.state.readFromLocalStorage('stocks');
     if(stocks==null) {

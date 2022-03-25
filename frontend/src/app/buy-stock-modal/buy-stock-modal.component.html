@@ -1,13 +1,13 @@
 <ng-template #content let-modal> 
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title"><a href="/search/{{state.getStockData().ticker}}">{{state.getStockData().ticker}}</a></h4>
+      <h4 class="modal-title" id="modal-basic-title"><a href="/search/{{state.getStockData().ticker}}">{{state.modalContent.ticker}}</a></h4>
       <button type="button" class="modal-close-btn" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
     </div>
     <div class="modal-body">
         <div class="d-flex flex-column">
             <div class="d-flex flex-row p-1">
                 <span class="modal-field-label">Current Price: </span>
-                <span>{{state.getStockData()['c'].toFixed(2)}}</span>
+                <span>{{state.modalContent.price.toFixed(2)}}</span>
             </div>
             <div class="d-flex flex-row p-1">
                 <span class="modal-field-label">Money in Wallet: </span>
@@ -27,15 +27,15 @@
                     required>
             </form>
         </div>
-        <span *ngIf="state.getWalletAmount()<stockBuyTotal" class="invalid-purchase p-1">
+        <span *ngIf="state.getWalletAmount()<(purchaseForm.get('purchaseFormControl').value * state.modalContent.price)" class="invalid-purchase p-1">
             Not enough money in wallet!
         </span>
     </div>
     <div class="modal-footer justify-content-between">
         <div class="d-flex flex-row">
             <span class="modal-field-label">Total:</span>
-            <span>{{stockBuyTotal.toFixed(2)}}</span>
+            <span>{{(purchaseForm.get('purchaseFormControl').value * state.modalContent.price).toFixed(2)}}</span>
         </div>
-        <button type="button" [disabled]="purchaseForm.get('purchaseFormControl').value<=0 || state.getWalletAmount()<stockBuyTotal" class="btn btn-success" (click)="(buyStock(state.getStockData().ticker, this.purchaseForm.get('purchaseFormControl').value, stockBuyTotal, state.getStockData()['c']) && modal.close('Buy clicked'));">Buy</button>
+        <button type="button" [disabled]="purchaseForm.get('purchaseFormControl').value<=0 || state.getWalletAmount()<(purchaseForm.get('purchaseFormControl').value * state.modalContent.price)" class="btn btn-success" (click)="(buyStock(state.modalContent.ticker, this.purchaseForm.get('purchaseFormControl').value, (purchaseForm.get('purchaseFormControl').value * state.modalContent.price), state.modalContent.price) && modal.close('Buy clicked'));">Buy</button>
     </div>
 </ng-template>   

@@ -125,6 +125,11 @@ export class SearchPageComponent implements OnInit {
     this.timeoutObjectBuySell = setTimeout(() => {this.selfClosingAlertSell.close(); this.timeoutObjectBuySell = null}, 2000);
   }
 
+  openModal(type) {
+    this.state.modalContent = {price: this.state.getStockData()['c'], ticker: this.state.getStockData()['ticker']};
+    type=='buy' ? this.buyStockModal.open() : this.sellStockModal.open();
+  }
+
   clearBuySellAlert() {
     this.state.addSearchPageFlags({showSellAlert: false, showBuyAlert: false});
   }
@@ -267,6 +272,7 @@ export class SearchPageComponent implements OnInit {
     this.setCurrentTime();
     this.makeRequests(ticker, true).then((result)=> {
       this.searchSummary.showSummaryData(ticker);
+      this.state.modalContent = {price: this.state.getStockData()['c']};
     });
 
   }

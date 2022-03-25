@@ -25,6 +25,7 @@ export class StateService {
                                                         isHistoricalEPSChartReady: false
                                                       });
   readonly _navBarMenu = new BehaviorSubject<any>({});
+  readonly _currentBuySellDetails = new BehaviorSubject<any>({});
 
   localStorage: any = window.localStorage;
   highChartsDataVar: any;
@@ -43,9 +44,18 @@ export class StateService {
     return this._navBarMenu.getValue();
   }
 
+  get modalContent(): any {
+    return this._currentBuySellDetails.getValue();
+  }
+
   set stockData(val: any) {
     this._stockData.next(val);
   }
+
+  set modalContent(val: any) {
+    this._currentBuySellDetails.next(Object.assign(this.modalContent, val));
+  }
+
 
   set navBarMenu(val: any) {
     this._navBarMenu.next(val);

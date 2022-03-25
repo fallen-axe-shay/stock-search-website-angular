@@ -52,8 +52,8 @@
                         {{state.getStockData()['exchange']}}
                     </div>
                     <div class="d-flex flex-row action-buttons p-1">
-                        <button type="button" class="btn btn-success mr-2" (click)="buyStockModal.open()">Buy</button>
-                        <button type="button" *ngIf="state.readFromLocalStorage('stocks')!=undefined && state.readFromLocalStorage('stocks')[state.getStockData().ticker]!=undefined && state.readFromLocalStorage('stocks')[state.getStockData().ticker].length!=0" class="btn btn-danger ml-2" (click)="sellStockModal.open()">Sell</button>
+                        <button type="button" class="btn btn-success mr-2" (click)="openModal('buy')">Buy</button>
+                        <button type="button" *ngIf="state.readFromLocalStorage('stocks')!=undefined && state.readFromLocalStorage('stocks')[state.getStockData().ticker]!=undefined && state.readFromLocalStorage('stocks')[state.getStockData().ticker].length!=0" class="btn btn-danger ml-2" (click)="openModal('sell')">Sell</button>
                     </div>
                 </div>
                 <div class="d-flex col-4 justify-content-center col-4">

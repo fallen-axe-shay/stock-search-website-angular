@@ -14,32 +14,21 @@ export class SellStockModalComponent implements OnInit {
     sellFormControl: new FormControl(0)
   });
 
-  stockSellTotal: any;
   modalCloseResult: any;
-  currentStockQty: any;
 
-  constructor(public state: StateService,  private modalService: NgbModal) { 
-    this.stockSellTotal = 0;
-    this.currentStockQty = 0;
-  }
+  constructor(public state: StateService,  private modalService: NgbModal) { }
 
   @ViewChild('content', { static: false }) content: ElementRef;
   @Output("showSellAlert") showSellAlert: EventEmitter<any> = new EventEmitter();
 
   ngOnInit(): void {
-
-    this.sellForm.get('sellFormControl').valueChanges.subscribe((qty)=> {
-      this.stockSellTotal = Math.round((this.state.getStockData()['c'] * qty) * 100) / 100;
-    });
     
   }
 
     /* Modal Operations */
     open() {
       this.sellForm.get('sellFormControl').setValue(0);
-      this.stockSellTotal = 0;
       let ticker = this.state.getStockData().ticker;
-      this.currentStockQty = this.state.readFromLocalStorage('stocks')[ticker].length;
       this.state.addSearchPageFlags({invalidPurchase: false});
       this.modalService.open(this.content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
         this.modalCloseResult = `Closed with: ${result}`;
