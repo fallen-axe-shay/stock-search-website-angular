@@ -1,6 +1,6 @@
 <div class="tab-content-container">
     <div class="d-flex flex-row flex-wrap">
-        <div class="d-flex flex-column flex-grow-1">
+        <div class="d-flex flex-column col-lg-6 col-sm-12">
             <div class="d-flex flex-column stock-price-summary">
                 <div class="d-flex"><span class="bold">High Price: </span><span>{{state.getStockData()['h'].toFixed(2)}}</span></div>
                 <div class="d-flex"><span class="bold">Low Price: </span><span>{{state.getStockData()['l'].toFixed(2)}}</span></div>
@@ -20,8 +20,8 @@
                 </div>
             </div>
         </div>
-        <div class="summary-chart">
-            <highcharts-chart 
+        <div class="summary-chart col-lg-6 col-sm-12">
+            <highcharts-chart class="m-lg-3 mb-3" 
                 [Highcharts]="Highcharts"
                 [options]="chartOptions"
                 [(update)]="updateFlag"

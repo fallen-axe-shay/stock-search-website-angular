@@ -148,7 +148,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   getStockDetails(ticker): void {
-    this.makeRequests(ticker).then(result=>{setTimeout(()=>{this.searchCharts.showHistoryData(this.state.getStockData().ticker)}, 1000)});
+    this.makeRequests(ticker).then(result=>{setTimeout(()=>{this.searchCharts.showHistoryData(this.state.getStockData().ticker); this.searchInsights.getInsightsData(this.state.getStockData().ticker);}, 1000)});
   }
 
   resetURL(): void {
@@ -167,7 +167,7 @@ export class SearchPageComponent implements OnInit {
         this.state.addSearchPageFlags({isHistoricChartReady: true});
         break;
       case 3:
-        this.searchInsights.getInsightsData(this.state.getStockData().ticker);
+        this.state.addSearchPageFlags({isHistoricalEPSChartReady: true, isRecommendationChartReady: true});
         break;
       default:
         //Do nothing
@@ -187,7 +187,9 @@ export class SearchPageComponent implements OnInit {
           logoError: false,
           isProfit: false,
           currentSearch: ticker,
-          isHistoricChartReady: false
+          isHistoricChartReady: false,
+          isHistoricalEPSChartReady: false,
+          isRecommendationChartReady: false
         }
       );
     this.state.setStockData({});

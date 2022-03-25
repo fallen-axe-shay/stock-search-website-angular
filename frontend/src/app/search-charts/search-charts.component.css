@@ -3,6 +3,10 @@
     padding: 20px;
 }
 
+.highcharts-container {
+    height: 400px;
+}
+
 highcharts-chart {
     display: block;
     width: fit-content;

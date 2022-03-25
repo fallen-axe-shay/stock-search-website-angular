@@ -16,7 +16,9 @@ export class SearchInsightsComponent implements OnInit {
   chartOptionsEPS: Highcharts.Options;
   chartOptionsRecommendation: Highcharts.Options;
 
-  constructor(public state: StateService, private httpClient: HttpClient) { }
+  constructor(public state: StateService, private httpClient: HttpClient) { 
+
+  }
 
   ngOnInit(): void {    
   }
@@ -49,8 +51,55 @@ export class SearchInsightsComponent implements OnInit {
   }
 
   displayEarningsData() {
-    //this.state.addSearchPageFlags({isEarningDataPresent: (this.state.getStockData().companyEarnings[0]['actual']!=null && this.state.getStockData().companyEarnings[0]['estimate']!=null && this.state.getStockData().companyEarnings[0]['surprise']!=null)});
-    //this.HighchartsEPS = Highcharts.chart('container', this.chartOptionsEPS);
+
+    let earningsData = this.state.getStockData().companyEarnings;
+
+    this.state.addSearchPageFlags({isEarningDataPresent: (earningsData[0]['actual']!=null && earningsData[0]['estimate']!=null && earningsData[0]['surprise']!=null)});
+
+    let actualData = earningsData.map((item) => item['actual']);
+
+    let estimateData = earningsData.map((item) => item['estimate']);
+
+    let categories = earningsData.map((item) => `${item['period']}<br>Surprise: ${item['surprise']}`);
+
+    this.chartOptionsEPS = {
+      chart: {
+        type: 'spline'
+      },
+      title: {
+        text: 'Historical EPS Surprises'
+      },
+      xAxis: {
+        maxPadding: 0.05,
+        showLastLabel: true,
+        categories: categories
+      },
+      yAxis: {
+        title: {
+          text: 'Quarterly EPS'
+        },
+        lineWidth: 2
+      },
+      legend: {
+        enabled: true
+      },
+      tooltip: {
+        split: false,
+        shared: true
+      },
+      series: [{
+        type: 'spline',
+        name: 'Actual',
+        data: actualData,
+        showInLegend: true
+      },{
+        type: 'spline',
+        name: 'Estimate',
+        data: estimateData,
+        showInLegend: true
+      }]
+    };
+
     this.state.setHistoricalEPSChartsData(
       {
         highchart: this.HighchartsEPS,
@@ -58,6 +107,7 @@ export class SearchInsightsComponent implements OnInit {
         update: true
       }
     );
+
   }
 
   displayRecommendationData() {
@@ -97,10 +147,6 @@ export class SearchInsightsComponent implements OnInit {
         borderWidth: 1,
         shadow: false
       },
-      // tooltip: {
-      //   headerFormat: '{point.x}<br/>',
-      //   pointFormat: '{series.name}: <b>{point.y}</b>'
-      // },
       plotOptions: {
         column: {
           stacking: 'normal',
@@ -145,7 +191,7 @@ export class SearchInsightsComponent implements OnInit {
         update: true
       }
     );
-    this.state.addSearchPageFlags({isRecommendationChartReady: true});
+
   }
 
   displaySentimentData() {

@@ -26,9 +26,9 @@
             </table>
         </div>
     </div>
-    <div class="d-flex flex-row col-12 justify-content-between trend-charts mt-4">
-        <div class="flex-column col-6">
-            <div class="m-lg-2 m-sm-1">
+    <div class="d-flex flex-row col-12 justify-content-between trend-charts mt-4 flex-wrap p-0">
+        <div class="flex-column col-lg-6 col-sm-12 p-0 pl-lg-2 pr-lg-2">
+            <div class="m-lg-2 m-sm-1 highcharts-container">
                 <highcharts-chart *ngIf="state.getSearchPageFlags().isRecommendationChartReady"
                     [Highcharts]="state.getRecommendationChartsData().highchart"
                     [options]="state.getRecommendationChartsData().options"
@@ -36,12 +36,12 @@
                 ></highcharts-chart>
             </div>
         </div>
-        <div class="flex-column col-6">
-            <div class="m-lg-2 m-sm-1 ">
+        <div class="flex-column col-lg-6 col-sm-12 p-0 pl-lg-2 pr-lg-2">
+            <div class="m-lg-2 m-sm-1">
                 <div class="mb-2 text-center" *ngIf="!state.getSearchPageFlags().isEarningDataPresent">
                     <span>Historical EPS Surprises</span>
                 </div>
-                <div *ngIf="state.getSearchPageFlags().isEarningDataPresent">
+                <div *ngIf="state.getSearchPageFlags().isEarningDataPresent" class="highcharts-container" class="mt-3 mb-3 mt-lg-0 mb-lg-0">
                     <highcharts-chart *ngIf="state.getSearchPageFlags().isHistoricalEPSChartReady" 
                         [Highcharts]="state.getHistoricalEPSChartsData().highchart"
                         [options]="state.getHistoricalEPSChartsData().options"
