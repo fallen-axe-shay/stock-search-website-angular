@@ -96,8 +96,10 @@ mat-option .option-desc {
 }
 
 .company-header .company-logo {
-    height: 120px;
-    max-width: 500px;
+    max-height: 80%;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: top;
 }
 
 .company-header .ticker {
@@ -164,6 +166,10 @@ mat-option .option-desc {
 .market {
     font-size: 15px;
     font-weight: bold;
+}
+
+.action-buttons {
+    z-index: 5;
 }
 
 mat-tab-group {

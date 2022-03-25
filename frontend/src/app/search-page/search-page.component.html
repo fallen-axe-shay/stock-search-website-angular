@@ -39,7 +39,7 @@
     <ngb-alert #selfClosingAlertBuy class="add-remove-watchlist" (closed)="clearBuySellAlert()" [type]="'success'" *ngIf="(state.getSearchPageFlags()).showBuyAlert">{{state.getStockData().ticker}} bought successfully</ngb-alert>
     <ngb-alert #selfClosingAlertSell class="add-remove-watchlist" (closed)="clearBuySellAlert()" [type]="'danger'" *ngIf="(state.getSearchPageFlags()).showSellAlert">{{state.getStockData().ticker}} sold successfully</ngb-alert>
     <div *ngIf="(state.getSearchPageFlags()).resultsReady && !(state.getSearchPageFlags()).isSearching">
-        <div class="d-flex flex-column col-10 m-auto">
+        <div class="d-flex flex-column col-lg-10 col-sm-12 m-auto">
             <div class="d-flex flex-row company-header">
                 <div class="d-flex flex-column company-buy-sell col-4">
                     <div class="d-flex flex-row p-1">
@@ -56,7 +56,7 @@
                         <button type="button" *ngIf="state.readFromLocalStorage('stocks')!=undefined && state.readFromLocalStorage('stocks')[state.getStockData().ticker]!=undefined && state.readFromLocalStorage('stocks')[state.getStockData().ticker].length!=0" class="btn btn-danger ml-2" (click)="sellStockModal.open()">Sell</button>
                     </div>
                 </div>
-                <div class="d-flex col-4 justify-content-center">
+                <div class="d-flex col-4 justify-content-center col-4">
                     <img class="company-logo" *ngIf="!(state.getSearchPageFlags()).logoError" src="{{state.getStockData()['logo']}}" (error)="state.addSearchPageFlags({logoError: true})"/>
                 </div>
                 <div class="stock-prices d-flex flex-column col-4" [class.green]="(state.getSearchPageFlags()).isProfit"  [class.red]="!(state.getSearchPageFlags()).isProfit">
