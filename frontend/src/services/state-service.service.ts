@@ -21,7 +21,8 @@ export class StateService {
                                                         invalidPurchase: false,
                                                         showBuyAlert: false,
                                                         showSellAlert: false,
-                                                        isHistoricChartReady: false
+                                                        isHistoricChartReady: false,
+                                                        isEarningDataPresent: false
                                                       });
 
   localStorage: any = window.localStorage;

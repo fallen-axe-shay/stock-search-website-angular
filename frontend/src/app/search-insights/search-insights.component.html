@@ -26,4 +26,21 @@
             </table>
         </div>
     </div>
+    <div class="d-flex flex-row col-12 justify-content-between trend-charts mt-4">
+        <div class="m-lg-2 m-sm-1 flex-column col-5">
+            <div class="mb-2 text-center">
+                <span>Recommendation Trends</span>
+            </div>
+            <div></div>
+        </div>
+        <div class="m-lg-2 m-sm-1 flex-column col-5">
+            <div class="mb-2 text-center">
+                <span>Historical EPS Surprises</span>
+            </div>
+            <div *ngIf="state.getSearchPageFlags().isEarningDataPresent"></div>
+            <div *ngIf="!state.getSearchPageFlags().isEarningDataPresent" class="col-12 text-center p-5">
+                No Data Present
+            </div>
+        </div>
+    </div>
 </div>

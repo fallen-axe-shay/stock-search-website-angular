@@ -167,7 +167,7 @@ export class SearchPageComponent implements OnInit {
         this.state.addSearchPageFlags({isHistoricChartReady: true});
         break;
       case 3:
-        this.searchInsights.getSocialSentiment(this.state.getStockData().ticker);
+        this.searchInsights.getInsightsData(this.state.getStockData().ticker);
         break;
       default:
         //Do nothing

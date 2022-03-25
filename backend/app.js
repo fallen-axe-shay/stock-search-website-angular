@@ -133,6 +133,34 @@ app.get('/getCompanyNews/:ticker', (req, res) => {
   })
 });
 
+app.get('/getCompanyEarnings/:ticker', (req, res) => {
+  let data = {
+    token: _GLOBAL.FH_API_KEY,
+    symbol: req.params.ticker
+  }
+  axios.get('https://finnhub.io/api/v1/stock/earnings', {params: data})
+  .then(fhRes => {
+    res.status(fhRes.status).json(fhRes.data);
+  })
+  .catch(error => {
+    res.status(500).json({message: error});
+  })
+});
+
+app.get('/getCompanyRecommendationTrends/:ticker', (req, res) => {
+  let data = {
+    token: _GLOBAL.FH_API_KEY,
+    symbol: req.params.ticker
+  }
+  axios.get('https://finnhub.io/api/v1/stock/recommendation', {params: data})
+  .then(fhRes => {
+    res.status(fhRes.status).json(fhRes.data);
+  })
+  .catch(error => {
+    res.status(500).json({message: error});
+  })
+});
+
 // Start the server
 const PORT = parseInt(process.env.PORT) || 8080;
 app.listen(PORT, () => {

@@ -14,7 +14,7 @@ export class SearchInsightsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  getSocialSentiment(ticker) {
+  getInsightsData(ticker) {
     let url = `${'/api/getCompanySocialSentiment'}/${ticker}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
@@ -23,6 +23,30 @@ export class SearchInsightsComponent implements OnInit {
         this.state.addStockData(res);
         this.displaySentimentData();
     });
+    url = `${'/api/getCompanyEarnings'}/${ticker}`;
+    this.httpClient.get(url).subscribe((res)=>{
+        res = {
+          companyEarnings: res
+        }
+        this.state.addStockData(res);
+        this.displayEarningsData();
+    });
+    url = `${'/api/getCompanyRecommendationTrends'}/${ticker}`;
+    this.httpClient.get(url).subscribe((res)=>{
+        res = {
+          companyRecommendations: res
+        }
+        this.state.addStockData(res);
+        this.displayRecommendationData();
+    });
+  }
+
+  displayEarningsData() {
+    this.state.addSearchPageFlags({isEarningDataPresent: (this.state.getStockData().companyEarnings[0]['actual']!=null)});
+  }
+
+  displayRecommendationData() {
+    
   }
 
   displaySentimentData() {
