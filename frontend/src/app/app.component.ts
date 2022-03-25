@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { StateService } from 'src/services/state-service.service';
 
 @Component({
@@ -12,6 +12,10 @@ export class AppComponent {
     if(this.state.getWalletAmount()==null) {
       this.state.setWalletAmount(25000);
     }
+  }
+
+  getChartData() {
+    this.state.addSearchPageFlags({isHistoricChartReady: false});
   }
 
   title = 'Search Page';

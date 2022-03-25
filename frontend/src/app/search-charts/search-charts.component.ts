@@ -48,6 +48,9 @@ export class SearchChartsComponent implements OnInit {
   };
 
   showHistoryData(ticker) {
+
+    if(ticker==undefined) return;
+
     let url = `${'/api/getCompanyHistoricalDataTwoYears'}/${ticker}/${Math.floor(this.state.getSearchPageFlags()['isMarketOpen'] ? (new Date()).getTime()/1000 : (new Date(this.state.getStockData()['t_unix']*1000)).getTime()/1000)}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
@@ -207,7 +210,11 @@ export class SearchChartsComponent implements OnInit {
     ]
     };
 
-    this.updateFlag = true;
+    this.state.setHighChartsData({
+      highchart: Highcharts,
+      options: this.chartOptions,
+      update: true
+    });
     
   }
 

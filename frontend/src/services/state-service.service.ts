@@ -25,6 +25,7 @@ export class StateService {
                                                       });
 
   localStorage: any = window.localStorage;
+  highChartsDataVar: any;
 
   get stockData(): any {
     return this._stockData.getValue();
@@ -86,6 +87,14 @@ export class StateService {
 
   setWalletAmount(amount) {
     this.addToLocalStorage('wallet', amount);
+  }
+
+  setHighChartsData(data) {
+    this.highChartsDataVar = data;
+  }
+
+  getHighChartsData() {
+    return this.highChartsDataVar;
   }
 
 }

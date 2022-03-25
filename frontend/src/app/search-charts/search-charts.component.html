@@ -3,8 +3,8 @@
         <mat-spinner  diameter="70"></mat-spinner>
     </div>
     <highcharts-chart *ngIf="state.getSearchPageFlags().isHistoricChartReady" 
-        [Highcharts]="Highcharts"
-        [options]="chartOptions"
-        [(update)]="updateFlag"
+        [Highcharts]="state.getHighChartsData().highchart"
+        [options]="state.getHighChartsData().options"
+        [(update)]="state.getHighChartsData().update"
         ></highcharts-chart>
 </div>
