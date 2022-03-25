@@ -102,6 +102,21 @@ app.get('/getCompanyHistoricalDataTwoYears/:ticker/:time', (req, res) => {
   })
 });
 
+app.get('/getCompanySocialSentiment/:ticker', (req, res) => {
+  let data = {
+    token: _GLOBAL.FH_API_KEY,
+    symbol: req.params.ticker,
+    from: '2022-01-01'
+  }
+  axios.get('https://finnhub.io/api/v1/stock/social-sentiment', {params: data})
+  .then(fhRes => {
+    res.status(fhRes.status).json(fhRes.data);
+  })
+  .catch(error => {
+    res.status(500).json({message: error});
+  })
+});
+
 app.get('/getCompanyNews/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,

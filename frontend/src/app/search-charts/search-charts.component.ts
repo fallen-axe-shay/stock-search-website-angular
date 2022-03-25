@@ -28,10 +28,7 @@ export class SearchChartsComponent implements OnInit {
   volume: any;
   groupingUnits: any;
 
-  isChartReady: Boolean;
-
   constructor(public state: StateService, private httpClient: HttpClient) { 
-    this.isChartReady = false;
     this.ohlc = [];
     this.volume = [];
     this.groupingUnits = [['week', [1]], ['month', [1, 2, 3, 4, 6]]];
@@ -142,9 +139,6 @@ export class SearchChartsComponent implements OnInit {
         opposite: false,
         height: '60%',
         lineWidth: 2,
-        resize: {
-          enabled: true
-        },
         visible: false
       }, {
         labels: {
@@ -212,8 +206,6 @@ export class SearchChartsComponent implements OnInit {
       }
     ]
     };
-
-    this.isChartReady = true;
 
     this.updateFlag = true;
     

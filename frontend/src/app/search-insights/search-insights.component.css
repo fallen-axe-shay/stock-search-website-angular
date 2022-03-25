@@ -1,0 +1,31 @@
+table .header {
+    background-color: rgb(233,236,239);
+    font-weight: bold;
+}
+
+table td {
+    height: 50px;
+    padding: 20px;
+    text-align: center;
+    width: 200px;
+}
+
+table tr {
+    border-top: gray;
+    border-bottom: gray;
+    border-style: solid;
+    border-width: 1px;
+    border-right: none;
+    border-left: none;
+}
+
+.social-sentiment-container {
+    margin-top: 20px;
+}
+
+.social-title {
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 20px;
+}

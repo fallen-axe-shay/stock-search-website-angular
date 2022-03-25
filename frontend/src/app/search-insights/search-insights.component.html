@@ -1,1 +1,29 @@
-<p>search-insights works!</p>
+<div class="d-flex flex-column">
+    <div class="d-flex flex-row justify-content-center">
+        <div class="d-flex flex-column justify-content-center social-sentiment-container"> 
+            <span class="social-title">Social Sentiments</span>
+            <table>
+                <tr>
+                    <td class="header">{{state.getStockData()['name']}}</td>
+                    <td class="header">Reddit</td>
+                    <td class="header">Twitter</td>
+                </tr>
+                <tr>
+                    <td class="header">Total Mentions</td>
+                    <td>{{state.getStockData().redditMentionsTotal}}</td>
+                    <td>{{state.getStockData().twitterMentionsTotal}}</td>
+                </tr>
+                <tr>
+                    <td class="header">Positive Mentions</td>
+                    <td>{{state.getStockData().redditMentionsPositive}}</td>
+                    <td>{{state.getStockData().twitterMentionsPositive}}</td>
+                </tr>
+                <tr>
+                    <td class="header">Negative Mentions</td>
+                    <td>{{state.getStockData().redditMentionsNegative}}</td>
+                    <td>{{state.getStockData().twitterMentionsNegative}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

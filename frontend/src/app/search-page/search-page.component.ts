@@ -14,6 +14,7 @@ import {NgbModal, ModalDismissReasons, NgbAlert} from '@ng-bootstrap/ng-bootstra
 import { BuyStockModalComponent } from '../buy-stock-modal/buy-stock-modal.component';
 import { SellStockModalComponent } from '../sell-stock-modal/sell-stock-modal.component';
 import { SearchChartsComponent } from '../search-charts/search-charts.component';
+import { SearchInsightsComponent } from '../search-insights/search-insights.component';
 
 @Component({
   selector: 'app-search-page',
@@ -66,6 +67,7 @@ export class SearchPageComponent implements OnInit {
    @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
    @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
    @ViewChild(SearchChartsComponent) searchCharts: SearchChartsComponent;
+   @ViewChild(SearchInsightsComponent) searchInsights: SearchInsightsComponent;
    @ViewChild('selfClosingAlert', {static: false}) selfClosingAlert: NgbAlert;
    @ViewChild('selfClosingAlertBuy', {static: false}) selfClosingAlertBuy: NgbAlert;
    @ViewChild('selfClosingAlertSell', {static: false}) selfClosingAlertSell: NgbAlert;
@@ -146,7 +148,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   getStockDetails(ticker): void {
-    this.makeRequests(ticker).then((result=> {setTimeout(()=> {this.searchCharts.showHistoryData(ticker)}, 10);}));
+    this.makeRequests(ticker).then(result=>{setTimeout(()=>{this.searchCharts.showHistoryData(this.state.getStockData().ticker)}, 1000)});
   }
 
   resetURL(): void {
@@ -157,6 +159,19 @@ export class SearchPageComponent implements OnInit {
 
   changeURL(ticker): void {
     this.location.replaceState(`/search/${ticker}`);
+  }
+
+  changeTabListener($event) {
+    switch($event.index) {
+      case 2:
+        this.state.addSearchPageFlags({isHistoricChartReady: true});
+        break;
+      case 3:
+        this.searchInsights.getSocialSentiment(this.state.getStockData().ticker);
+        break;
+      default:
+        //Do nothing
+    }
   }
 
   searchTicker($event: any) {
@@ -171,7 +186,8 @@ export class SearchPageComponent implements OnInit {
           isSearching: true,
           logoError: false,
           isProfit: false,
-          currentSearch: ticker
+          currentSearch: ticker,
+          isHistoricChartReady: false
         }
       );
     this.state.setStockData({});
