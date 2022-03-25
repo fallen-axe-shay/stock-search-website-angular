@@ -1,1 +1,20 @@
-<p>watchlist works!</p>
+<div class="d-flex flex-column col-lg-8 container mt-4">
+    <span class="text-left mb-4"><h1>My Watchlist</h1></span>
+    <ngb-alert [type]="'warning'" [dismissible]="false" *ngIf="!(watchlistTickers.length>0)" class="text-center">Currently you don't have any stock in your watchlist</ngb-alert>
+    <div *ngFor="let ticker of watchlistTickers" class="watchlist-containers mb-2">
+        <div class="d-flex flex-row col-12 p-2 pt-3 pb-3">
+            <button class="delete-btn" (click)="deleteFromWatchlist(ticker)"></button>
+            <div class="d-flex flex-column col-6 profile">
+                <span class="p-2 ticker">{{ticker}}</span>
+                <span class="p-2 name">{{watchlistData[ticker]['name']}}</span>
+            </div>
+            <div class="d-flex flex-column col-6 justify-content-end price-data" [class.green]="watchlistData[ticker]['d']>0" [class.red]="watchlistData[ticker]['d']<0">
+                <span class="p-2 text-right close-price">{{watchlistData[ticker]['c'].toFixed(2)}}</span>
+                <div class="p-2 d-flex flex-row justify-content-end">
+                    <span class="arrow mr-2" [class.green]="watchlistData[ticker]['d']>0" [class.red]="watchlistData[ticker]['d']<0"></span>
+                    <div class="change">{{watchlistData[ticker]['d'].toFixed(2)}} ({{watchlistData[ticker]['dp'].toFixed(2)}}%)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

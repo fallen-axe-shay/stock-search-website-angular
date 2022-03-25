@@ -41,7 +41,7 @@ export class SearchSummaryComponent implements OnInit {
         name: this.state.getStockData()['ticker'],
         data: this.state.getStockData()['historicalData'] && this.getHistoricalData(),
         showInLegend: false,
-        color: this.state.getStockData()['historicalData'] ? this.state.getSearchPageFlags()['isProfit'] ? '#229e38' : '#c50000' : null
+        color: (this.state.getStockData()['historicalData'] ? (this.state.getStockData()['d']>0 ? '#229e38' : (this.state.getStockData()['d']<0 ?'#c50000' : 'black')) : null)
       }]
     };
   }
@@ -80,7 +80,7 @@ export class SearchSummaryComponent implements OnInit {
     this.chartOptions.series[0] = {
       type: 'line',
       data: this.getHistoricalData(),
-      color: this.state.getSearchPageFlags()['isProfit'] ? '#229e38' : '#c50000'
+      color: (this.state.getStockData()['d']>0 ? '#229e38' : (this.state.getStockData()['d']<0 ?'#c50000' : 'black'))
     }
     this.updateFlag = true;
   }

@@ -185,7 +185,6 @@ export class SearchPageComponent implements OnInit {
           resultsReady: false, 
           isSearching: true,
           logoError: false,
-          isProfit: false,
           currentSearch: ticker,
           isHistoricChartReady: false,
           isHistoricalEPSChartReady: false,
@@ -199,12 +198,6 @@ export class SearchPageComponent implements OnInit {
       return;
     }
     this.getStockDetails(ticker);
-    this.setStar(ticker);
-  }
-
-  setStar(ticker) {
-    let watchlist = this.state.readFromLocalStorage('watchlist');
-    this.state.addSearchPageFlags({isStarred: (watchlist!=null && watchlist.indexOf(ticker)!=-1)});
   }
 
   clearSearchInterval() {
@@ -255,12 +248,6 @@ export class SearchPageComponent implements OnInit {
             var date = datetime.getFullYear()+'-'+this.zeroPad(datetime.getMonth()+1, 2)+'-'+this.zeroPad(datetime.getDate(),2);
             var time = this.zeroPad(datetime.getHours(),2) + ":" + this.zeroPad(datetime.getMinutes(),2) + ":" + this.zeroPad(datetime.getSeconds(),2);
             this.queryResult['t'] = date + ' ' + time;
-            let change = this.queryResult['d'];
-            if(change>0) {
-              this.state.addSearchPageFlags({isProfit: true});
-            }
-            this.queryResult['d'] = Math.abs(this.queryResult['d']).toFixed(2);
-            this.queryResult['dp'] = Math.abs(this.queryResult['dp']).toFixed(2);
             this.state.addStockData(this.queryResult);
             !refresh && this.state.addSearchPageFlags({resultsReady: !error, isSearching: false});
             !refresh && this.setSearchInterval(ticker);
@@ -295,7 +282,7 @@ export class SearchPageComponent implements OnInit {
   addRemoveWatchlist() {
     let watchlist, ticker;
     ticker = this.state.getStockData().ticker;
-    if(this.state.getSearchPageFlags().isStarred) {
+    if(this.state.readFromLocalStorage('watchlist')==undefined || this.state.readFromLocalStorage('watchlist').indexOf(this.state.getStockData()['ticker'])==-1) {
       this.watchlistAlert.msg = `${ticker} added to Watchlist`;
       this.watchlistAlert.type = 'success';
       watchlist = this.state.readFromLocalStorage('watchlist');

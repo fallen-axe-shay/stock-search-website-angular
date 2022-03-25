@@ -8,11 +8,9 @@ export class StateService {
   readonly _stockData = new BehaviorSubject<any>({});
   readonly _searchPageFlags = new BehaviorSubject<any>({
                                                         isLoading: false,
-                                                        isStarred: false,
                                                         isSearching: false,
                                                         resultsReady: false,
                                                         logoError: false,
-                                                        isProfit: false,
                                                         isMarketOpen: false,
                                                         currentSearch: '',
                                                         invalidTicker: false,
@@ -26,6 +24,7 @@ export class StateService {
                                                         isRecommendationChartReady:  false,
                                                         isHistoricalEPSChartReady: false
                                                       });
+  readonly _navBarMenu = new BehaviorSubject<any>({});
 
   localStorage: any = window.localStorage;
   highChartsDataVar: any;
@@ -40,8 +39,16 @@ export class StateService {
     return this._searchPageFlags.getValue();
   }
 
+  get navBarMenu(): any {
+    return this._navBarMenu.getValue();
+  }
+
   set stockData(val: any) {
     this._stockData.next(val);
+  }
+
+  set navBarMenu(val: any) {
+    this._navBarMenu.next(val);
   }
 
   set searchPageFlags(val: any) {
