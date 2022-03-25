@@ -84,6 +84,9 @@ export class SellStockModalComponent implements OnInit {
       for(var i = 0; i<stockQty; i++) {
         soldStocks.push(stocks[ticker].pop());
       }
+      if(stocks[ticker].length==0) {
+        delete stocks[ticker];
+      }
       this.state.addToLocalStorage('stocks', stocks);
       this.showSellAlert.emit(null);
       return true;

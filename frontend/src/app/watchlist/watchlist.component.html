@@ -1,7 +1,7 @@
 <div class="d-flex flex-column col-lg-8 container mt-4">
     <span class="text-left mb-4"><h1>My Watchlist</h1></span>
     <ngb-alert [type]="'warning'" [dismissible]="false" *ngIf="!(watchlistTickers.length>0)" class="text-center">Currently you don't have any stock in your watchlist</ngb-alert>
-    <div *ngFor="let ticker of watchlistTickers" class="watchlist-containers mb-2">
+    <div *ngFor="let ticker of watchlistTickers" class="watchlist-containers mb-2" (click)="searchTicker(ticker)">
         <div class="d-flex flex-row col-12 p-2 pt-3 pb-3">
             <button class="delete-btn" (click)="deleteFromWatchlist(ticker)"></button>
             <div class="d-flex flex-column col-6 profile">
