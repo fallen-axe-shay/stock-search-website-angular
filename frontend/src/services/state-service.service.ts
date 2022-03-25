@@ -22,11 +22,15 @@ export class StateService {
                                                         showBuyAlert: false,
                                                         showSellAlert: false,
                                                         isHistoricChartReady: false,
-                                                        isEarningDataPresent: false
+                                                        isEarningDataPresent: false,
+                                                        isRecommendationChartReady:  false,
+                                                        isHistoricalEPSChartReady: false
                                                       });
 
   localStorage: any = window.localStorage;
   highChartsDataVar: any;
+  highChartsHistoricalEPSVar: any;
+  highChartsRecommendationVar: any;
 
   get stockData(): any {
     return this._stockData.getValue();
@@ -96,6 +100,22 @@ export class StateService {
 
   getHighChartsData() {
     return this.highChartsDataVar;
+  }
+
+  setHistoricalEPSChartsData(data) {
+    this.highChartsHistoricalEPSVar = data;
+  }
+
+  getHistoricalEPSChartsData() {
+    return this.highChartsHistoricalEPSVar;
+  }
+
+  setRecommendationChartsData(data) {
+    this.highChartsRecommendationVar = data;
+  }
+
+  getRecommendationChartsData() {
+    return this.highChartsRecommendationVar;
   }
 
 }

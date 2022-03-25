@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import * as Highcharts from 'highcharts';
 import { StateService } from 'src/services/state-service.service';
 
 @Component({
@@ -9,9 +10,15 @@ import { StateService } from 'src/services/state-service.service';
 })
 export class SearchInsightsComponent implements OnInit {
 
+  Highcharts: typeof Highcharts = Highcharts;
+  HighchartsEPS: typeof Highcharts = Highcharts;
+  HighchartsRecommendation: typeof Highcharts = Highcharts;
+  chartOptionsEPS: Highcharts.Options;
+  chartOptionsRecommendation: Highcharts.Options;
+
   constructor(public state: StateService, private httpClient: HttpClient) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
   }
 
   getInsightsData(ticker) {
@@ -42,11 +49,103 @@ export class SearchInsightsComponent implements OnInit {
   }
 
   displayEarningsData() {
-    this.state.addSearchPageFlags({isEarningDataPresent: (this.state.getStockData().companyEarnings[0]['actual']!=null)});
+    //this.state.addSearchPageFlags({isEarningDataPresent: (this.state.getStockData().companyEarnings[0]['actual']!=null && this.state.getStockData().companyEarnings[0]['estimate']!=null && this.state.getStockData().companyEarnings[0]['surprise']!=null)});
+    //this.HighchartsEPS = Highcharts.chart('container', this.chartOptionsEPS);
+    this.state.setHistoricalEPSChartsData(
+      {
+        highchart: this.HighchartsEPS,
+        options: this.chartOptionsEPS,
+        update: true
+      }
+    );
   }
 
   displayRecommendationData() {
     
+    let recommendationData = this.state.getStockData().companyRecommendations;
+
+    let categories = recommendationData.map((item) => item['period'].substring(0, item['period'].length-3));
+
+    let data = [recommendationData.map((item) => item['strongBuy']), recommendationData.map((item) => item['buy']), recommendationData.map((item) => item['hold']), recommendationData.map((item) => item['sell']), recommendationData.map((item) => item['strongSell'])];
+
+    this.chartOptionsRecommendation = {
+      chart: {
+        type: 'column'
+      },
+      title: {
+        text: 'Recommendation Trends'
+      },
+      xAxis: {
+        categories: categories
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: '#Analysis',
+          align: 'high'
+        },
+        stackLabels: {
+          enabled: false,
+        }
+      },
+      legend: {
+        align: 'center',
+        verticalAlign: 'bottom',
+        backgroundColor:
+          Highcharts.defaultOptions.legend.backgroundColor || 'white',
+        borderColor: '#CCC',
+        borderWidth: 1,
+        shadow: false
+      },
+      // tooltip: {
+      //   headerFormat: '{point.x}<br/>',
+      //   pointFormat: '{series.name}: <b>{point.y}</b>'
+      // },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      series: [{
+        type: 'column',
+        name: 'Strong Buy',
+        color: '#176f37',
+        data: data[0]
+      }, {
+        type: 'column',
+        name: 'Buy',
+        color: '#1db954',
+        data: data[1]
+      }, {
+        type: 'column',
+        name: 'Hold',
+        color: '#b98b1d',
+        data: data[2]
+      }, {
+        type: 'column',
+        name: 'Sell',
+        color: '#f45e5e',
+        data: data[3]
+      },
+      {
+        type: 'column',
+        name: 'Strong Sell',
+        color: '#813131',
+        data: data[4]
+      }]
+    };
+
+    this.state.setRecommendationChartsData(
+      {
+        highchart: this.HighchartsRecommendation,
+        options: this.chartOptionsRecommendation,
+        update: true
+      }
+    );
+    this.state.addSearchPageFlags({isRecommendationChartReady: true});
   }
 
   displaySentimentData() {

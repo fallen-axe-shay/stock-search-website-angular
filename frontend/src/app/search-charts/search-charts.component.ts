@@ -21,8 +21,6 @@ export class SearchChartsComponent implements OnInit {
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
-  updateFlag = false;
-  chart: any;
 
   ohlc: any;
   volume: any;

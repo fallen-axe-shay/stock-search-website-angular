@@ -34,3 +34,9 @@ table tr {
     font-size: 20px;
     font-weight: bold;
 }
+
+highcharts-chart {
+    display: block;
+    width: fit-content;
+    width: 100%;
+}
