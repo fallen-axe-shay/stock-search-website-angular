@@ -161,6 +161,7 @@ export class SearchPageComponent implements OnInit {
     this.state.addSearchPageFlags({resultsReady: false, isSearching: false, invalidTicker: false, noStockData: false});
     this.intervalObject && clearInterval(this.intervalObject);
     this.state.addSearchPageFlags({currentSearch: ''});
+    this.clearSearchInterval();
   }
 
   changeURL(ticker): void {
