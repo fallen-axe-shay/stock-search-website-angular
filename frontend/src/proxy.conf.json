@@ -2,7 +2,6 @@
     "/api": {
     "target": "https://my-csci-nodejs-homework.uw.r.appspot.com/",
     "secure": false,
-    "pathRewrite": {"^/api" : ""},
     "changeOrigin": true,
     "logLevel": "debug"
     }

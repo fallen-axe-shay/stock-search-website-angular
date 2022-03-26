@@ -9,8 +9,22 @@ const _GLOBAL = {
 }
 
 const app = express();
+const path = require('path');
 
 app.use(cors());
+
+app.use(express.static('./dist/angular-frontend'));
+
+function getRoot(request, response) {
+  response.sendFile(path.resolve('./dist/angular-frontend/index.html'));
+}
+
+function getUndefined(request, response) {
+  response.sendFile(path.resolve('./dist/angular-frontend/index.html'));
+}
+
+app.get('/', getRoot);
+app.get('/search/:ticker', getUndefined);
 
 app.get('/getAutocompleteData/:ticker', (req, res) => {
   let data = {
