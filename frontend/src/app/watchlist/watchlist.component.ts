@@ -21,6 +21,13 @@ export class WatchlistComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getWatchlistData();    
+  }
+
+  getWatchlistData() {
+
+    if(this.watchlistTickers==null) return;
+
     this.watchlistTickers.forEach((ticker)=>{
       this.watchlistData[ticker] = {};
       this.requestURLs.forEach((url)=> {
@@ -30,6 +37,7 @@ export class WatchlistComponent implements OnInit {
       });
       })
     });
+
   }
 
   deleteFromWatchlist(ticker) {

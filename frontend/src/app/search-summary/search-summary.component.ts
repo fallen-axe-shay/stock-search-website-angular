@@ -29,6 +29,7 @@ export class SearchSummaryComponent implements OnInit {
         title: {
           text: null
         },
+        crosshair: true,
         type: 'datetime'
       }],
       yAxis: [{

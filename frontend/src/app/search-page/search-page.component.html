@@ -12,6 +12,7 @@
                         [matAutocomplete]="auto"
                         name="searchQuery"
                         pattern="^[a-zA-Z0-9].*"
+                        oninput="this.value = this.value.toUpperCase()"
                         (keydown.enter)="searchTicker(searchForm.get('searchFormControl').value.toUpperCase()); autocomplete.closePanel();"
                         required>
                     <mat-autocomplete #auto="matAutocomplete">
@@ -59,7 +60,7 @@
                 <div class="d-flex col-4 justify-content-center col-4">
                     <img class="company-logo" *ngIf="!(state.getSearchPageFlags()).logoError" src="{{state.getStockData()['logo']}}" (error)="state.addSearchPageFlags({logoError: true})"/>
                 </div>
-                <div class="stock-prices d-flex flex-column col-4" [class.green]="state.getStockData()['d']>0"  [class.red]="state.getStockData()['d']<0">
+                <div class="stock-prices d-flex flex-column col-4 font-light-bold" [class.green]="state.getStockData()['d']>0"  [class.red]="state.getStockData()['d']<0">
                     <div class="price d-flex justify-content-end p-1 pb-2 pt-2">{{state.getStockData()['c'].toFixed(2)}}</div>
                     <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2">
                         <span class="arrow mr-2" [class.green]="state.getStockData()['d']>0" [class.red]="state.getStockData()['d']<0"></span>
@@ -68,7 +69,7 @@
                     <div class="time d-flex justify-content-end p-1">{{currentTime}}</div>
                 </div>
             </div>
-            <div class="market d-flex justify-content-center">
+            <div class="market d-flex justify-content-center mt-2">
                 <div *ngIf="(state.getSearchPageFlags()).isMarketOpen" class="open">
                     Market is Open
                 </div>

@@ -4,6 +4,12 @@
 
 .container h1 {
     font-size: 30px;
+    font-weight: 500;
+}
+
+.container h2 {
+    font-size: 25px;
+    font-weight: 400;
 }
 
 .arrow {

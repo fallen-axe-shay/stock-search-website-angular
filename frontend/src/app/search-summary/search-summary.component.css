@@ -6,6 +6,13 @@
     text-decoration: underline;
 }
 
+.bold.underline {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
 .stock-price-summary {
     padding: 30px;
     margin-left: 20px;

@@ -7,23 +7,35 @@ nav .nav-link {
     padding: 10px;
     display: inline-flex;
     width: 100%;
-    justify-content: flex-end;
+    justify-content: center;
+    min-width: 110px;
+    font-size: 14px;
 }
 
 .collapse.navbar-collapse {
     justify-content: end;
 }
 
+nav .nav-link {
+    border: rgba(255, 255, 255, 0);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 15px;
+}
+
 nav .nav-link.active {
     border: white;
     border-width: 1px;
     border-style: solid;
-    border-radius: 5px;
+    border-radius: 15px;
 }
 
 nav {
     background-color: rgb(2, 2, 151);
     margin-bottom: 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
 nav * {
@@ -49,3 +61,5 @@ nav * {
     height: 100%;
     margin-bottom: auto;
 }
+
+@media all and (max-width: 768px) { nav .nav-link { justify-content: flex-end; } }
