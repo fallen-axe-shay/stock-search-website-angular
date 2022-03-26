@@ -160,6 +160,7 @@ export class SearchPageComponent implements OnInit {
     this.location.replaceState("/search/home");
     this.state.addSearchPageFlags({resultsReady: false, isSearching: false, invalidTicker: false, noStockData: false});
     this.intervalObject && clearInterval(this.intervalObject);
+    this.state.addSearchPageFlags({currentSearch: ''});
   }
 
   changeURL(ticker): void {

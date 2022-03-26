@@ -9,8 +9,8 @@
             <span class="ticker">{{ticker.key}}</span>
             <span class="ml-2 name">{{portfolioData[ticker.key]['name']}}</span>
         </div>
-        <div class="d-flex flex-row col-12 content">
-            <div class="d-flex flex-column col-6 p-2">
+        <div class="d-flex flex-row col-12 content flex-wrap">
+            <div class="d-flex flex-column col-lg-6 col-sm-12 p-2">
                 <div class="d-flex flex-row pt-1 pb-1">
                     <span class="col-8 text-left">Quantity: </span>
                     <span class="col-4 text-right">{{ticker.value.length.toFixed(2)}}</span>
@@ -24,7 +24,7 @@
                     <span class="col-4 text-right">{{getTotalCost(ticker.value).toFixed(2)}}</span>
                 </div>
             </div>
-            <div class="d-flex flex-column col-6 p-2">
+            <div class="d-flex flex-column col-lg-6 col-sm-12 p-2">
                 <div class="d-flex flex-row pt-1 pb-1">
                     <span class="col-8 text-left">Change: </span>
                     <span class="col-4 text-right" *ngIf="portfolioData[ticker.key]['c']" [class.green]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))>0" [class.red]="(portfolioData[ticker.key]['c']-(getTotalCost(ticker.value)/ticker.value.length))<0">

@@ -15,7 +15,7 @@
                 <div class="mt-3"><span class="bold">Company peers: </span></div>
                 <div class="mt-3">
                     <span *ngFor="let item of state.getStockData()['peers']">
-                        <span class="link" (click)="onPeerClick(item)">{{item}}{{state.getStockData()['peers'].indexOf(item)==(state.getStockData()['peers'].length-1)? '' : ','}} </span>
+                        <span *ngIf="item" class="link" (click)="onPeerClick(item)">{{item}}{{state.getStockData()['peers'].indexOf(item)==(state.getStockData()['peers'].length-1)? '' : ','}} </span>
                     </span>
                 </div>
             </div>

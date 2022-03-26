@@ -8,7 +8,6 @@
 
 .news-items .title {
     font-size: 15px;
-    margin-left: 10px;
     padding: 10px;
 }
 
@@ -27,4 +26,13 @@
     margin-top: 20px;
 }
 
-@media all and (max-width: 768px) { .news-items{ flex-wrap: wrap;} }
+@media all and (max-width: 768px) { 
+    .news-items{ 
+        flex-wrap: wrap;
+        padding: 12px;
+    }
+    
+    .news-items .image img {
+        width: 100%;
+    }
+}

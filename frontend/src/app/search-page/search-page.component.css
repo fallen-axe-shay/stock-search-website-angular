@@ -14,7 +14,6 @@
     border-style: solid;
     border-width: 3px;
     border-color: rgb(103, 20, 180);
-    width: 450px;
     height: 40px;
     display: flex;
     align-items: center;
@@ -197,6 +196,57 @@ ngb-alert.no-data {
 
 ngb-alert.add-remove-watchlist {
     font-weight: normal;
-    width: 80%;
+}
+
+@media all and (max-width: 768px) { 
+    .company-header {
+        padding: 0px !important;
+    }
+    .company-header .ticker {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .company-header .desc {
+        font-size: 17px;
+    }
+
+    .company-header .market {
+        font-size: 10px;
+        font-weight: normal;
+    }
+
+    .company-header .star-icon {
+        width: 17px;
+        height: 17px;
+        margin-left: 5px !important;
+    }
+
+    .company-header .stock-prices {
+       padding: 0px!important;
+    }
+
+    .company-header .stock-prices .price {
+        font-size: 25px;
+    }
+    
+    .company-header .stock-prices .change {
+        font-size: 20px;
+        font-weight: 400px;
+    }
+    
+    .company-header .stock-prices .time {
+        font-weight: lighter;
+        color: #413f41;
+    }
+
+    ngb-alert {
+        margin-top: 20px;
+    }
+
+    .company-header {
+        margin-top: 30px;
+    }
+
 }
 
