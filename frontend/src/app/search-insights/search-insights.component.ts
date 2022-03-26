@@ -143,8 +143,6 @@ export class SearchInsightsComponent implements OnInit {
         verticalAlign: 'bottom',
         backgroundColor:
           Highcharts.defaultOptions.legend.backgroundColor || 'white',
-        borderColor: '#CCC',
-        borderWidth: 1,
         shadow: false
       },
       plotOptions: {

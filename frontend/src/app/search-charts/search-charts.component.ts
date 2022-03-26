@@ -100,7 +100,7 @@ export class SearchChartsComponent implements OnInit {
             color: 'black'
         },
         labelStyle: {
-            color: 'silver',
+            color: 'gray',
             fontWeight: 'bold'
         },
       selected: 2

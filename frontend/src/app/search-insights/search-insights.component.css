@@ -11,8 +11,8 @@ table td {
 }
 
 table tr {
-    border-top: gray;
-    border-bottom: gray;
+    border-top: rgb(190, 190, 190);
+    border-bottom: rgb(190, 190, 190);
     border-style: solid;
     border-width: 1px;
     border-right: none;
