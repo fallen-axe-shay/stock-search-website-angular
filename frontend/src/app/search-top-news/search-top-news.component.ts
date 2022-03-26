@@ -18,7 +18,7 @@ export class SearchTopNewsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let curCount = 5;
+    let curCount = 6;
     for(var i = 0; i<Math.min(curCount, this.state.getStockData().news.length); i++) {
       let item = this.state.getStockData().news[i];
       if(item.image=='' || item.headline=='') {

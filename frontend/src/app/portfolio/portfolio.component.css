@@ -40,7 +40,7 @@
 
 .portfolio-containers {
     background-color: white;
-    border-radius: 2px;
+    border-radius: 3px;
     border: rgb(173, 173, 173);
     border-width: 1px;
     border-style: solid;
@@ -55,12 +55,16 @@
     border-bottom: rgb(173, 173, 173);
     border-bottom-style: solid;
     border-width: 1px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 .footer {
     border-top: rgb(173, 173, 173);
     border-top-style: solid;
     border-width: 1px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .ticker {
@@ -73,7 +77,7 @@
 .name {
     font-size: 15px;
     font-weight: 500;
-    color: rgb(172, 172, 172);
+    color: rgb(139, 139, 139);
     padding: 10px;
     padding-left: 0px;
     margin-left: 0px;

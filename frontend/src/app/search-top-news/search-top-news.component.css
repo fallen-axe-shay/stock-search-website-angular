@@ -1,7 +1,7 @@
 .news-items .image img {
     height: 120px;
     width: 120px;
-    object-fit: contain;
+    object-fit: cover;
     object-position: center;
     padding: 10px;
 }

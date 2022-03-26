@@ -14,6 +14,7 @@
 
 .invalid-purchase {
     color: red;
+    font-weight: 500;
 }
 
 .modal-close-btn {

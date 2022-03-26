@@ -27,7 +27,7 @@
                     required>
             </form>
         </div>
-        <span *ngIf="state.readFromLocalStorage('stocks')[state.modalContent.ticker] && state.readFromLocalStorage('stocks')[state.modalContent.ticker].length<sellForm.get('sellFormControl').value" class="invalid-purchase p-1">
+        <span *ngIf="state.readFromLocalStorage('stocks')[state.modalContent.ticker] && state.readFromLocalStorage('stocks')[state.modalContent.ticker].length<sellForm.get('sellFormControl').value" class="invalid-purchase p-1 mt-2">
             You cannot sell the stocks that you don't have!
         </span>
     </div>
