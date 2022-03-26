@@ -40,12 +40,12 @@ export class SearchPageComponent implements OnInit {
   timeoutObjectBuySell: any;
 
   requestURLs: any = {
-    autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
-    companyProfile: ['Profile', '/api/getCompanyProfile'],
-    companyQuote: ['Stock', '/api/getCompanyQuote'],
-    companyPeers: ['Peers', '/api/getCompanyPeers'],
-    companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData'],
-    companyNews: ['News', 'api/getCompanyNews']
+    autocomplete: ['AutoComplete', '/getAutocompleteData'],
+    companyProfile: ['Profile', '/getCompanyProfile'],
+    companyQuote: ['Stock', '/getCompanyQuote'],
+    companyPeers: ['Peers', '/getCompanyPeers'],
+    companyHistoricalData: ['CompanyHistory', '/getCompanyHistoricalData'],
+    companyNews: ['News', 'getCompanyNews']
   }
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService) {

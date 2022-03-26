@@ -49,7 +49,7 @@ export class SearchChartsComponent implements OnInit {
 
     if(ticker==undefined) return;
 
-    let url = `${'/api/getCompanyHistoricalDataTwoYears'}/${ticker}/${Math.floor(this.state.getSearchPageFlags()['isMarketOpen'] ? (new Date()).getTime()/1000 : (new Date(this.state.getStockData()['t_unix']*1000)).getTime()/1000)}`;
+    let url = `${'/getCompanyHistoricalDataTwoYears'}/${ticker}/${Math.floor(this.state.getSearchPageFlags()['isMarketOpen'] ? (new Date()).getTime()/1000 : (new Date(this.state.getStockData()['t_unix']*1000)).getTime()/1000)}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
           historicalDataChartsTab: res

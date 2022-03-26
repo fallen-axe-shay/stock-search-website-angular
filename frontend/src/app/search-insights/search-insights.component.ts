@@ -24,7 +24,7 @@ export class SearchInsightsComponent implements OnInit {
   }
 
   getInsightsData(ticker) {
-    let url = `${'/api/getCompanySocialSentiment'}/${ticker}`;
+    let url = `${'/getCompanySocialSentiment'}/${ticker}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
           socialSentiment: res
@@ -32,7 +32,7 @@ export class SearchInsightsComponent implements OnInit {
         this.state.addStockData(res);
         this.displaySentimentData();
     });
-    url = `${'/api/getCompanyEarnings'}/${ticker}`;
+    url = `${'/getCompanyEarnings'}/${ticker}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
           companyEarnings: res
@@ -40,7 +40,7 @@ export class SearchInsightsComponent implements OnInit {
         this.state.addStockData(res);
         this.displayEarningsData();
     });
-    url = `${'/api/getCompanyRecommendationTrends'}/${ticker}`;
+    url = `${'/getCompanyRecommendationTrends'}/${ticker}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
           companyRecommendations: res

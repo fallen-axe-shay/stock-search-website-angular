@@ -17,7 +17,7 @@ export class PortfolioComponent implements OnInit {
   @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
   @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
 
-  requestURLs: any = ['/api/getCompanyProfile', '/api/getCompanyQuote'];
+  requestURLs: any = ['/getCompanyProfile', '/getCompanyQuote'];
 
   portfolioList: any;
   portfolioData: any;

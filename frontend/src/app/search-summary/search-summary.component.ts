@@ -55,7 +55,7 @@ export class SearchSummaryComponent implements OnInit {
   }
 
   showSummaryData(ticker) {
-    let url = `${'/api/getCompanyHistoricalData'}/${ticker}/${Math.floor(this.state.getSearchPageFlags()['isMarketOpen'] ? (new Date()).getTime()/1000 : (new Date(this.state.getStockData()['t_unix']*1000)).getTime()/1000)}`;
+    let url = `${'/getCompanyHistoricalData'}/${ticker}/${Math.floor(this.state.getSearchPageFlags()['isMarketOpen'] ? (new Date()).getTime()/1000 : (new Date(this.state.getStockData()['t_unix']*1000)).getTime()/1000)}`;
     this.httpClient.get(url).subscribe((res)=>{
         res = {
           historicalData: res
