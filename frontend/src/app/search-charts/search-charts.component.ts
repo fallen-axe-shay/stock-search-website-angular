@@ -88,14 +88,16 @@ export class SearchChartsComponent implements OnInit {
     });
 
     this.chartOptions = {
+      chart: {
+        zoomType: 'x'
+      },
       rangeSelector: {
         enabled: true,
         inputBoxBorderColor: 'gray',
         inputBoxWidth: 120,
         inputBoxHeight: 18,
         inputStyle: {
-            color: 'black',
-            fontWeight: 'bold'
+            color: 'black'
         },
         labelStyle: {
             color: 'silver',
@@ -113,8 +115,6 @@ export class SearchChartsComponent implements OnInit {
         enabled: true
       },
       yAxis: [{
-        startOnTick: false,
-        endOnTick: false,
         labels: {
           align: 'right',
           x: -3
@@ -126,7 +126,7 @@ export class SearchChartsComponent implements OnInit {
         height: '60%',
         lineWidth: 2,
         resize: {
-          enabled: true
+          enabled: false
         },
       },
       {
@@ -137,6 +137,7 @@ export class SearchChartsComponent implements OnInit {
         title: {
           text: 'VBP'
         },
+        alignTicks: true,
         opposite: false,
         height: '60%',
         lineWidth: 2,
@@ -150,13 +151,14 @@ export class SearchChartsComponent implements OnInit {
           text: 'Volume'
         },
         opposite: true,
-        top: '65%',
+        top: '70%',
         height: '35%',
         offset: 0,
         lineWidth: 2,
       }],
       xAxis: {
-        type: "datetime"
+        type: "datetime",
+        crosshair: true
       },
       tooltip: {
         split: true
@@ -165,7 +167,8 @@ export class SearchChartsComponent implements OnInit {
         series: {
           dataGrouping: {
             units: this.groupingUnits
-          }
+          },
+          boostThreshold: 0
         }
       },
       series: [{
@@ -174,7 +177,8 @@ export class SearchChartsComponent implements OnInit {
         zIndex: 2,
         data: this.ohlc,
         id: this.state.getStockData()['ticker'],
-        showInLegend: false
+        showInLegend: false,
+        yAxis: 0
       }, {
         type: 'column',
         name: 'Volume',
@@ -203,7 +207,8 @@ export class SearchChartsComponent implements OnInit {
         zIndex: 1,
         marker: {
           enabled: false
-        }
+        },
+        yAxis: 0
       }
     ]
     };
