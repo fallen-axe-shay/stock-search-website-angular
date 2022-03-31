@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { SearchInsightsComponent } from '../search-insights/search-insights.comp
   templateUrl: './search-page.component.html',
   styleUrls: ['./search-page.component.css']
 })
-export class SearchPageComponent implements OnInit {
+export class SearchPageComponent implements OnInit, OnDestroy {
 
   searchForm = new FormGroup({
     searchFormControl: new FormControl('')
@@ -81,6 +81,8 @@ export class SearchPageComponent implements OnInit {
       if(ticker.toLowerCase().trim()!='home') {
         this.searchForm.get('searchFormControl').setValue(ticker.toUpperCase());
         this.searchTicker(ticker);
+      } else {
+        this.state.addSearchPageFlags({invalidTicker: false});
       }
     }
     this.searchForm.get('searchFormControl').valueChanges.subscribe((query)=> {
@@ -99,10 +101,24 @@ export class SearchPageComponent implements OnInit {
         this.currentRequest += 1;
       });
     });
-    setInterval(() => {
-      this.setCurrentTime();
-    }, 1*1000);
+  }
 
+  ngOnDestroy(): void {
+      (this.timeoutObject!=null) && clearTimeout(this.timeoutObject);
+      (this.timeoutObjectBuySell!=null) && clearTimeout(this.timeoutObjectBuySell);
+      this.clearSearchInterval();
+      this.timeoutObject = null;
+      this.timeoutObjectBuySell = null;
+      this.state.addSearchPageFlags({showWatchlistAlert: false, showBuyAlert: false, showSellAlert: false});
+      try {
+        this.selfClosingAlertBuy.close(); 
+      } catch (ex) {}
+      try {
+        this.selfClosingAlertSell.close(); 
+      } catch (ex) {}
+      try {
+        this.selfClosingAlert.close(); 
+      } catch (ex) {}
   }
 
   parseFloat(data) {
@@ -205,16 +221,20 @@ export class SearchPageComponent implements OnInit {
     !Array.isArray($event) && this.changeURL(ticker);
     if(ticker.trim()=='') {
       this.state.addSearchPageFlags({isSearching: false, invalidTicker: true});
+      this.searchForm.get('searchFormControl').setValue('');
+      this.state.addSearchPageFlags({currentSearch: ''});
+      this.changeURL('home');
       return;
     }
     this.getStockDetails(ticker);
   }
 
   clearSearchInterval() {
-    this.intervalObject && clearInterval(this.intervalObject);
+    (this.intervalObject!=null) && clearInterval(this.intervalObject);
   }
 
   makeRequests(ticker, refresh = false) {
+    console.log(refresh);
     let error = false;
     return new Promise((resolve, reject) => {
       let resCount = 0;
