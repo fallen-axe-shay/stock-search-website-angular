@@ -60,11 +60,10 @@
                 <div class="d-flex justify-content-center col-lg-4 col-3">
                     <img class="company-logo" *ngIf="!(state.getSearchPageFlags()).logoError" src="{{state.getStockData()['logo']}}" (error)="state.addSearchPageFlags({logoError: true})"/>
                 </div>
-                <div class="stock-prices d-flex flex-column col-4 font-light-bold" [class.green]="state.getStockData()['d']>0"  [class.red]="state.getStockData()['d']<0">
+                <div class="stock-prices d-flex flex-column col-4 font-light-bold" [class.green]="parseFloat(state.getStockData()['d'].toFixed(2))>0"  [class.red]="parseFloat(state.getStockData()['d'].toFixed(2))<0">
                     <div class="price d-flex justify-content-end p-1 pb-2 pt-2">{{state.getStockData()['c'].toFixed(2)}}</div>
                     <div class="change d-flex flex-row justify-content-end p-1 pb-2 pt-2 text-right">
-                        <span class="arrow mr-2" [class.green]="state.getStockData()['d']>0" [class.red]="state.getStockData()['d']<0"></span>
-                        <span class="change-amount"><span class="d-flex flex-wrap">{{state.getStockData()['d'].toFixed(2)}}</span><span class="d-flex flex-wrap">({{state.getStockData()['dp'].toFixed(2)}})</span></span>
+                        <span class="change-amount d-flex flex-wrap justify-content-end"><span class="d-flex justify-content-end"><span class="arrow mr-2" [class.green]="parseFloat(state.getStockData()['d'].toFixed(2))>0" [class.red]="parseFloat(state.getStockData()['d'].toFixed(2))<0"></span><span>{{state.getStockData()['d'].toFixed(2)}}</span></span><span class="ml-2">({{state.getStockData()['dp'].toFixed(2)}}%)</span></span>
                     </div>
                     <div class="time d-flex justify-content-end p-1 text-right">{{currentTime}}</div>
                 </div>

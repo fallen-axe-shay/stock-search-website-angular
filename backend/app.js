@@ -19,14 +19,13 @@ function getRoot(request, response) {
   response.sendFile(path.resolve('./dist/angular-frontend/index.html'));
 }
 
-function getUndefined(request, response) {
-  response.sendFile(path.resolve('./dist/angular-frontend/index.html'));
-}
-
 app.get('/', getRoot);
-app.get('/search/:ticker', getUndefined);
+app.get('/search/', getRoot);
+app.get('/search/:ticker', getRoot);
+app.get('/watchlist', getRoot);
+app.get('/portfolio', getRoot);
 
-app.get('/getAutocompleteData/:ticker', (req, res) => {
+app.get('/api/getAutocompleteData/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     q: req.params.ticker
@@ -40,7 +39,7 @@ app.get('/getAutocompleteData/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyProfile/:ticker', (req, res) => {
+app.get('/api/getCompanyProfile/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker
@@ -54,7 +53,7 @@ app.get('/getCompanyProfile/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyQuote/:ticker', (req, res) => {
+app.get('/api/getCompanyQuote/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker
@@ -68,7 +67,7 @@ app.get('/getCompanyQuote/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyPeers/:ticker', (req, res) => {
+app.get('/api/getCompanyPeers/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker
@@ -82,7 +81,7 @@ app.get('/getCompanyPeers/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyHistoricalData/:ticker/:time', (req, res) => {
+app.get('/api/getCompanyHistoricalData/:ticker/:time', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker,
@@ -99,7 +98,7 @@ app.get('/getCompanyHistoricalData/:ticker/:time', (req, res) => {
   })
 });
 
-app.get('/getCompanyHistoricalDataTwoYears/:ticker/:time', (req, res) => {
+app.get('/api/getCompanyHistoricalDataTwoYears/:ticker/:time', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker,
@@ -116,7 +115,7 @@ app.get('/getCompanyHistoricalDataTwoYears/:ticker/:time', (req, res) => {
   })
 });
 
-app.get('/getCompanySocialSentiment/:ticker', (req, res) => {
+app.get('/api/getCompanySocialSentiment/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker,
@@ -131,7 +130,7 @@ app.get('/getCompanySocialSentiment/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyNews/:ticker', (req, res) => {
+app.get('/api/getCompanyNews/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker,
@@ -147,7 +146,7 @@ app.get('/getCompanyNews/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyEarnings/:ticker', (req, res) => {
+app.get('/api/getCompanyEarnings/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker
@@ -161,7 +160,7 @@ app.get('/getCompanyEarnings/:ticker', (req, res) => {
   })
 });
 
-app.get('/getCompanyRecommendationTrends/:ticker', (req, res) => {
+app.get('/api/getCompanyRecommendationTrends/:ticker', (req, res) => {
   let data = {
     token: _GLOBAL.FH_API_KEY,
     symbol: req.params.ticker

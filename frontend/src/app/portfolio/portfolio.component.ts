@@ -17,7 +17,7 @@ export class PortfolioComponent implements OnInit {
   @ViewChild(BuyStockModalComponent) buyStockModal: BuyStockModalComponent;
   @ViewChild(SellStockModalComponent) sellStockModal: SellStockModalComponent;
 
-  requestURLs: any = ['/getCompanyProfile', '/getCompanyQuote'];
+  requestURLs: any = ['/api/getCompanyProfile', '/api/getCompanyQuote'];
 
   portfolioList: any;
   portfolioData: any;
@@ -38,6 +38,10 @@ export class PortfolioComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAPIData();
+  }
+
+  parseFloat(data) {
+    return parseFloat(data);
   }
 
   fetchAPIData() {

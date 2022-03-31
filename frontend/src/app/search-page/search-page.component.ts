@@ -40,12 +40,12 @@ export class SearchPageComponent implements OnInit {
   timeoutObjectBuySell: any;
 
   requestURLs: any = {
-    autocomplete: ['AutoComplete', '/getAutocompleteData'],
-    companyProfile: ['Profile', '/getCompanyProfile'],
-    companyQuote: ['Stock', '/getCompanyQuote'],
-    companyPeers: ['Peers', '/getCompanyPeers'],
-    companyHistoricalData: ['CompanyHistory', '/getCompanyHistoricalData'],
-    companyNews: ['News', 'getCompanyNews']
+    autocomplete: ['AutoComplete', '/api/getAutocompleteData'],
+    companyProfile: ['Profile', '/api/getCompanyProfile'],
+    companyQuote: ['Stock', '/api/getCompanyQuote'],
+    companyPeers: ['Peers', '/api/getCompanyPeers'],
+    companyHistoricalData: ['CompanyHistory', '/api/getCompanyHistoricalData'],
+    companyNews: ['News', '/api/getCompanyNews']
   }
 
   constructor(private httpClient: HttpClient, private route: ActivatedRoute, private location: Location, public state: StateService) {
@@ -79,7 +79,7 @@ export class SearchPageComponent implements OnInit {
       this.changeURL((this.state.getSearchPageFlags()).currentSearch);
     } else {
       if(ticker.toLowerCase().trim()!='home') {
-        this.searchForm.get('searchFormControl').setValue(ticker);
+        this.searchForm.get('searchFormControl').setValue(ticker.toUpperCase());
         this.searchTicker(ticker);
       }
     }
@@ -101,8 +101,12 @@ export class SearchPageComponent implements OnInit {
     });
     setInterval(() => {
       this.setCurrentTime();
-    }, 60*1000);
+    }, 1*1000);
 
+  }
+
+  parseFloat(data) {
+    return parseFloat(data);
   }
 
   clearWatchlistAlert() {
@@ -159,7 +163,6 @@ export class SearchPageComponent implements OnInit {
   resetURL(): void {
     this.location.replaceState("/search/home");
     this.state.addSearchPageFlags({resultsReady: false, isSearching: false, invalidTicker: false, noStockData: false});
-    this.intervalObject && clearInterval(this.intervalObject);
     this.state.addSearchPageFlags({currentSearch: ''});
     this.clearSearchInterval();
   }
@@ -266,7 +269,7 @@ export class SearchPageComponent implements OnInit {
   }
 
   setSearchInterval(ticker) {
-    this.intervalObject = setInterval(()=>this.updateStockData(ticker), 15*1000);
+    this.intervalObject = setInterval(()=>this.updateStockData(ticker), this.state.getSearchPageFlags().isMarketOpen ? 15*1000 : 60*1000);
   }
 
   updateStockData(ticker) {

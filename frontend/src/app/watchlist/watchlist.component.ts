@@ -10,7 +10,7 @@ import { StateService } from 'src/services/state-service.service';
 })
 export class WatchlistComponent implements OnInit {
 
-  requestURLs: any = ['/getCompanyProfile', '/getCompanyQuote'];
+  requestURLs: any = ['/api/getCompanyProfile', '/api/getCompanyQuote'];
 
   watchlistTickers: any;
   watchlistData: any;
