@@ -234,14 +234,12 @@ export class SearchPageComponent implements OnInit, OnDestroy {
   }
 
   makeRequests(ticker, refresh = false) {
-    console.log(refresh);
     let error = false;
     return new Promise((resolve, reject) => {
       let resCount = 0;
       let requests = [this.requestURLs.companyProfile, this.requestURLs.companyQuote, this.requestURLs.companyPeers, this.requestURLs.companyNews];
       requests.forEach((item)=> {
         if(error) {
-          console.log(error)
           return false;
         }
         let url;

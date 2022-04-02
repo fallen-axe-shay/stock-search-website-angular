@@ -54,13 +54,11 @@ export class SearchInsightsComponent implements OnInit {
 
     let earningsData = this.state.getStockData().companyEarnings;
 
-    this.state.addSearchPageFlags({isEarningDataPresent: (earningsData[0]['actual']!=null && earningsData[0]['estimate']!=null && earningsData[0]['surprise']!=null)});
+    let actualData = earningsData.map((item) => item['actual']==null ? 0 : item['actual']);
 
-    let actualData = earningsData.map((item) => item['actual']);
+    let estimateData = earningsData.map((item) => item['estimate']==null ? 0 : item['estimate']);
 
-    let estimateData = earningsData.map((item) => item['estimate']);
-
-    let categories = earningsData.map((item) => `${item['period']}<br>Surprise: ${item['surprise']}`);
+    let categories = earningsData.map((item) => `${item['period']}<br>Surprise: ${item['surprise']==null ? 0 : item['surprise']}`);
 
     this.chartOptionsEPS = {
       chart: {

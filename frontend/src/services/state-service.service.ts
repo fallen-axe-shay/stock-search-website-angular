@@ -20,7 +20,7 @@ export class StateService {
                                                         showBuyAlert: false,
                                                         showSellAlert: false,
                                                         isHistoricChartReady: false,
-                                                        isEarningDataPresent: false,
+                                                        isEarningDataPresent: true,
                                                         isRecommendationChartReady:  false,
                                                         isHistoricalEPSChartReady: false,
                                                         showPortfolioBuyAlert: false,

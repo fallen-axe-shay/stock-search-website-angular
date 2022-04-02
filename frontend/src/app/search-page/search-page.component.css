@@ -99,7 +99,7 @@ mat-option .option-desc {
 }
 
 .company-header .company-logo {
-    max-height: 80%;
+    max-height: 150px;
     max-width: 100%;
     object-fit: contain;
     object-position: top;
